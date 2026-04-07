@@ -89,3 +89,58 @@ nav a:hover, nav a.active { opacity: 1; color: var(--accent); }
 .gold { background: #FFD700; color: #000; }
 table { width: 100%; border-collapse: collapse; }
 td, th { padding: 15px; text-align: left; border-bottom: 1px solid var(--border); }
+
+/* --- FOOTER ULTRA-DISCRET --- */
+.site-footer {
+    margin-top: 100px; /* Espace avec le reste */
+    padding: 30px 40px;
+    border-top: 1px solid var(--border);
+    opacity: 0.3; /* Très fondu dans le décor */
+    transition: opacity 0.5s ease;
+}
+
+.site-footer:hover {
+    opacity: 0.9; /* S'affiche mieux au survol */
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    max-width: 100%;
+    font-family: 'Inter', sans-serif;
+}
+
+.footer-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.footer-label {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--accent); /* Petite touche de rouge */
+    text-transform: uppercase;
+}
+
+.footer-text {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 700px) {
+    .footer-container { flex-direction: column; gap: 20px; align-items: flex-start; }
+}
+
+@media (max-width: 600px) {
+    .site-footer {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+        padding: 40px 20px 20px;
+    }
+}
