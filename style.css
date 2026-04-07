@@ -19,7 +19,45 @@ nav { height: 48px; padding: 0 24px; background: var(--nav-bg); backdrop-filter:
 nav a { color: var(--text); text-decoration: none; font-size: 13px; margin: 0 16px; opacity: 0.4; font-weight: 600; transition: 0.3s; }
 nav a:hover, nav a.active { opacity: 1; color: var(--accent); }
 
-.theme-switch { position: fixed; top: 25px; right: 30px; z-index: 1001; cursor: pointer; }
+/* --- NOUVEAU TOGGLE COULISSANT --- */
+.theme-switch {
+    position: fixed;
+    top: 25px;
+    right: 30px;
+    z-index: 1001;
+    cursor: pointer;
+    width: 54px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.switch-dot {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Position quand c'est en mode clair */
+[data-theme="light"] .theme-switch {
+    background: #ff80ab; /* Couleur bleue Apple quand activé */
+}
+
+[data-theme="light"] .switch-dot {
+    transform: translateX(24px); /* Il glisse à droite */
+}
 
 .hero-title-centered { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 

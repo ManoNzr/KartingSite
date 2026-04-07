@@ -93,16 +93,21 @@
         document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
 
         const toggle = document.getElementById('theme-toggle');
-        const icon = document.getElementById('theme-icon');
-        const applyTheme = (t) => {
-            if(t === "light") { document.documentElement.setAttribute("data-theme", "light"); icon.innerText = "☀️"; }
-            else { document.documentElement.removeAttribute("data-theme"); icon.innerText = "🌙"; }
-        };
-        toggle.onclick = () => {
-            const t = document.documentElement.hasAttribute("data-theme") ? "dark" : "light";
-            localStorage.setItem("theme", t); applyTheme(t);
-        };
-        applyTheme(localStorage.getItem("theme") || "dark");
+		const icon = document.getElementById('theme-icon');
+		const applyTheme = (t) => {
+			if(t === "light") { 
+				document.documentElement.setAttribute("data-theme", "light"); 
+				icon.innerText = "☀️"; 
+			} else { 
+				document.documentElement.removeAttribute("data-theme"); 
+				icon.innerText = "🌙"; 
+			}
+		};
+		toggle.onclick = () => {
+			const t = document.documentElement.hasAttribute("data-theme") ? "dark" : "light";
+			localStorage.setItem("theme", t); applyTheme(t);
+		};
+		applyTheme(localStorage.getItem("theme") || "dark");
     </script>
 
 </body>

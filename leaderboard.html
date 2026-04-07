@@ -152,41 +152,90 @@
         function displayPlayers(players) {
             const body = document.getElementById('table-body');
             body.innerHTML = '';
-            players.forEach(item => {
-                let badgeClass = item.rank === 1 ? 'gold' : item.rank === 2 ? 'silver' : item.rank === 3 ? 'bronze' : 'other-rank';
-                body.innerHTML += `<tr><td style="padding-left: 25px;"><div class="rank-badge ${badgeClass}">${item.rank}</div></td><td style="font-weight: 700; color: var(--text);">${item.player.name || "Ace"}</td><td style="text-align: right; padding-right: 40px; font-family: monospace; font-weight: 800; color: var(--accent); font-size: 20px;">${formatChrono(item.score)}</td></tr>`;
-            });
-        }
-        async function loadLB() {
-            try {
-                const API_KEY = "dev_3c4618fd7ae34068a8891dd75abc4dd1";
-                const auth = await fetch("https://api.lootlocker.io/game/v2/session/guest", {
-                    method: "POST", headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({game_key: API_KEY, game_version: "0.1.0.0", development_mode: true})
-                }).then(r => r.json());
-                const lb = await fetch("https://api.lootlocker.io/game/leaderboards/33908/list?count=50", {
-                    method: "GET", headers: {"x-session-token": auth.session_token}
-                }).then(r => r.json());
-                allPlayers = lb.items;
-                displayPlayers(allPlayers);
-            } catch(e) { console.error(e); }
-        }
-        document.getElementById('search-player').addEventListener('input', () => {
-             const term = document.getElementById('search-player').value.toLowerCase();
-             displayPlayers(allPlayers.filter(p => (p.player.name || "Ace").toLowerCase().includes(term)));
-        });
-        window.onload = loadLB;
+        <script>
+    let allPlayers = [];
 
-        const toggle = document.getElementById('theme-toggle');
-        const applyTheme = (t) => {
-            if(t === "light") { document.documentElement.setAttribute("data-theme", "light"); icon.innerText = "☀️"; }
-            else { document.documentElement.removeAttribute("data-theme"); icon.innerText = "🌙"; }
-        };
-        toggle.onclick = () => {
-            const t = document.documentElement.hasAttribute("data-theme") ? "dark" : "light";
-            localStorage.setItem("theme", t); applyTheme(t);
-        };
-        applyTheme(localStorage.getItem("theme") || "dark");
-    </script>
+    function formatChrono(ms) {
+        let mins = Math.floor(ms / 60000);
+        let secs = Math.floor((ms % 60000) / 1000);
+        let mms = ms % 1000;
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}:${mms.toString().padStart(3, '0')}`;
+    }
+
+    function displayPlayers(players) {
+        const body = document.getElementById('table-body');
+        body.innerHTML = '';
+        players.forEach(item => {
+            let badgeClass = item.rank === 1 ? 'gold' : item.rank === 2 ? 'silver' : item.rank === 3 ? 'bronze' : 'other-rank';
+            body.innerHTML += `
+                <tr>
+                    <td style="padding-left: 25px;"><div class="rank-badge ${badgeClass}">${item.rank}</div></td>
+                    <td style="font-weight: 700; color: var(--text);">${item.player.name || "Anonyme"}</td>
+                    <td style="text-align: right; padding-right: 40px; font-family: monospace; font-weight: 800; color: var(--accent); font-size: 20px;">${formatChrono(item.score)}</td>
+                </tr>`;
+        });
+    }
+
+    // --- LA LOGIQUE DE TRI RÉPARÉE ---
+    function updateTable() {
+        let filtered = [...allPlayers];
+        const searchTerm = document.getElementById('search-player').value.toLowerCase();
+        const sortOrder = document.getElementById('sort-order').value;
+
+        // 1. Filtrage par nom
+        filtered = filtered.filter(p => (p.player.name || "Anonyme").toLowerCase().includes(searchTerm));
+
+        // 2. Tri
+        if (sortOrder === "name-asc") {
+            filtered.sort((a, b) => (a.player.name || "Anonyme").localeCompare(b.player.name || "Anonyme"));
+        } else if (sortOrder === "name-desc") {
+            filtered.sort((a, b) => (b.player.name || "Anonyme").localeCompare(a.player.name || "Anonyme"));
+        } else {
+            filtered.sort((a, b) => a.rank - b.rank); // Par rang
+        }
+
+        displayPlayers(filtered);
+    }
+
+    async function loadLB() {
+        try {
+            const API_KEY = "dev_3c4618fd7ae34068a8891dd75abc4dd1";
+            const auth = await fetch("https://api.lootlocker.io/game/v2/session/guest", {
+                method: "POST", headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({game_key: API_KEY, game_version: "0.1.0.0", development_mode: true})
+            }).then(r => r.json());
+            
+            const lb = await fetch("https://api.lootlocker.io/game/leaderboards/33908/list?count=50", {
+                method: "GET", headers: {"x-session-token": auth.session_token}
+            }).then(r => r.json());
+            
+            allPlayers = lb.items;
+            updateTable();
+        } catch(e) { console.error(e); }
+    }
+
+    // Écouteurs d'événements
+    document.getElementById('search-player').addEventListener('input', updateTable);
+    document.getElementById('sort-order').addEventListener('change', updateTable);
+    window.onload = loadLB;
+
+    // --- LOGIQUE DU TOGGLE ---
+    const toggle = document.getElementById('theme-toggle');
+	const icon = document.getElementById('theme-icon');
+	const applyTheme = (t) => {
+		if(t === "light") { 
+			document.documentElement.setAttribute("data-theme", "light"); 
+			icon.innerText = "☀️"; 
+		} else { 
+			document.documentElement.removeAttribute("data-theme"); 
+			icon.innerText = "🌙"; 
+		}
+	};
+	toggle.onclick = () => {
+		const t = document.documentElement.hasAttribute("data-theme") ? "dark" : "light";
+		localStorage.setItem("theme", t); applyTheme(t);
+	};
+	applyTheme(localStorage.getItem("theme") || "dark");
+</script>
 </body>
 </html>
