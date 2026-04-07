@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Télécharger | Elite Racing</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="nav-wrapper">
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="team.html">Équipe</a>
+            <a href="leaderboard.html">Leaderboard</a>
+            <a href="download.html" class="active">Télécharger</a>
+        </nav>
+    </div>
+    
+    <div class="theme-switch" id="theme-toggle"><div class="switch-dot" id="theme-icon">🌙</div></div>
+
+    <section class="hero-title-centered">
+        <h1 class="reveal active" style="font-size: clamp(40px, 10vw, 80px); font-weight: 800; letter-spacing: -3px;">Prêt à piloter ?</h1>
+        <p class="reveal active" style="margin-top: 20px; color: var(--text-dim);">Dernière version : 1.0.0 (Windows / Mac)</p>
+        
+        <div class="reveal active" style="margin-top: 50px; display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+            <a href="builds/EliteRacing_Win.zip" class="cta-massive" style="background: var(--text); color: var(--bg);">TÉLÉCHARGER POUR PC</a>
+            <a href="builds/EliteRacing_Mac.zip" class="cta-massive">TÉLÉCHARGER POUR MAC</a>
+        </div>
+    </section>
+
+    <div style="max-width: 800px; margin: auto; padding: 0 20px 100px;">
+        <div class="glass-card" style="padding: 40px; text-align: center;">
+            <h2 style="margin-bottom: 20px;">Configuration recommandée</h2>
+            <p style="color: var(--text-dim);">8 Go RAM • Carte Graphique Dédiée • 500 Mo d'espace libre</p>
+        </div>
+    </div>
+
+    <script>
+        const toggle = document.getElementById('theme-toggle');
+        const applyTheme = (t) => {
+            if(t === "light") { document.documentElement.setAttribute("data-theme", "light"); icon.innerText = "☀️"; }
+            else { document.documentElement.removeAttribute("data-theme"); icon.innerText = "🌙"; }
+        };
+        toggle.onclick = () => {
+            const t = document.documentElement.hasAttribute("data-theme") ? "dark" : "light";
+            localStorage.setItem("theme", t); applyTheme(t);
+        };
+        applyTheme(localStorage.getItem("theme") || "dark");
+    </script>
+</body>
+</html>

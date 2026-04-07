@@ -98,7 +98,14 @@
     </style>
 </head>
 <body>
-    <div class="nav-wrapper"><nav><a href="index.html">Accueil</a><a href="team.html">Équipe</a><a href="leaderboard.html" class="active">Leaderboard</a></nav></div>
+    <div class="nav-wrapper">
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="team.html">Équipe</a>
+            <a href="leaderboard.html" class="active">Leaderboard</a>
+            <a href="download.html">Télécharger</a>
+        </nav>
+    </div>
     
     <div class="theme-switch" id="theme-toggle"><div class="switch-dot" id="theme-icon">🌙</div></div>
 
@@ -136,40 +143,20 @@
 
     <script>
         let allPlayers = [];
-
         function formatChrono(ms) {
             let mins = Math.floor(ms / 60000);
             let secs = Math.floor((ms % 60000) / 1000);
             let mms = ms % 1000;
             return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}:${mms.toString().padStart(3, '0')}`;
         }
-
         function displayPlayers(players) {
             const body = document.getElementById('table-body');
             body.innerHTML = '';
             players.forEach(item => {
                 let badgeClass = item.rank === 1 ? 'gold' : item.rank === 2 ? 'silver' : item.rank === 3 ? 'bronze' : 'other-rank';
-                body.innerHTML += `
-                    <tr>
-                        <td style="padding-left: 25px;"><div class="rank-badge ${badgeClass}">${item.rank}</div></td>
-                        <td style="font-weight: 700; color: var(--text);">${item.player.name || "Ace"}</td>
-                        <td style="text-align: right; padding-right: 40px; font-family: monospace; font-weight: 800; color: var(--accent); font-size: 20px;">${formatChrono(item.score)}</td>
-                    </tr>`;
+                body.innerHTML += `<tr><td style="padding-left: 25px;"><div class="rank-badge ${badgeClass}">${item.rank}</div></td><td style="font-weight: 700; color: var(--text);">${item.player.name || "Ace"}</td><td style="text-align: right; padding-right: 40px; font-family: monospace; font-weight: 800; color: var(--accent); font-size: 20px;">${formatChrono(item.score)}</td></tr>`;
             });
         }
-
-        function updateTable() {
-            const searchTerm = document.getElementById('search-player').value.toLowerCase();
-            const sortVal = document.getElementById('sort-order').value;
-            let filtered = allPlayers.filter(p => (p.player.name || "Ace").toLowerCase().includes(searchTerm));
-
-            if (sortVal === "rank") filtered.sort((a, b) => a.rank - b.rank);
-            else if (sortVal === "name-asc") filtered.sort((a, b) => (a.player.name || "Ace").localeCompare(b.player.name || "Ace"));
-            else if (sortVal === "name-desc") filtered.sort((a, b) => (b.player.name || "Ace").localeCompare(a.player.name || "Ace"));
-
-            displayPlayers(filtered);
-        }
-
         async function loadLB() {
             try {
                 const API_KEY = "dev_3c4618fd7ae34068a8891dd75abc4dd1";
@@ -177,22 +164,20 @@
                     method: "POST", headers: {"Content-Type": "application/json"},
                     body: JSON.stringify({game_key: API_KEY, game_version: "0.1.0.0", development_mode: true})
                 }).then(r => r.json());
-
                 const lb = await fetch("https://api.lootlocker.io/game/leaderboards/33908/list?count=50", {
                     method: "GET", headers: {"x-session-token": auth.session_token}
                 }).then(r => r.json());
-
                 allPlayers = lb.items;
                 displayPlayers(allPlayers);
             } catch(e) { console.error(e); }
         }
-
-        document.getElementById('search-player').addEventListener('input', updateTable);
-        document.getElementById('sort-order').addEventListener('change', updateTable);
+        document.getElementById('search-player').addEventListener('input', () => {
+             const term = document.getElementById('search-player').value.toLowerCase();
+             displayPlayers(allPlayers.filter(p => (p.player.name || "Ace").toLowerCase().includes(term)));
+        });
         window.onload = loadLB;
 
         const toggle = document.getElementById('theme-toggle');
-        const icon = document.getElementById('theme-icon');
         const applyTheme = (t) => {
             if(t === "light") { document.documentElement.setAttribute("data-theme", "light"); icon.innerText = "☀️"; }
             else { document.documentElement.removeAttribute("data-theme"); icon.innerText = "🌙"; }

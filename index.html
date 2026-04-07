@@ -14,6 +14,7 @@
             <a href="index.html" class="active">Accueil</a>
             <a href="team.html">Équipe</a>
             <a href="leaderboard.html">Leaderboard</a>
+            <a href="download.html">Télécharger</a>
         </nav>
     </div>
     
@@ -23,10 +24,10 @@
 
     <section class="hero-title-centered">
         <h1 class="reveal" style="font-size: clamp(60px, 12vw, 140px); font-weight: 800; letter-spacing: -4px; line-height: 0.9;">
-            Elite Racing.
+            GAME NAME
         </h1>
         <p class="reveal" style="font-size: 18px; color: var(--accent); font-weight: 700; letter-spacing: 6px; text-transform: uppercase; margin-top: 20px;">
-            Next-Gen Browser Racing
+            PLACE HOLDER
         </p>
         <div class="reveal" style="margin-top: 50px; animation: bounce 2s infinite; font-size: 30px; opacity: 0.3;">↓</div>
     </section>
@@ -77,46 +78,30 @@
             <h2 class="reveal" style="font-size: clamp(40px, 8vw, 65px); font-weight: 800; margin-bottom: 40px; line-height: 1.1;">
                 Prêt à entrer dans <br><span style="color: var(--accent);">la légende ?</span>
             </h2>
-            <div class="reveal">
-                <a href="leaderboard.html" class="cta-massive">REGARDER LE CLASSEMENT</a>
+            <div class="reveal" style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="download.html" class="cta-massive" style="background: var(--text); color: var(--bg);">TÉLÉCHARGER LE JEU</a>
+                <a href="leaderboard.html" class="cta-massive">LEADERBOARD</a>
             </div>
         </section>
 
     </div>
 
     <script>
-        // Gestion de l'apparition au scroll (Reveal)
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(e => { 
-                if(e.isIntersecting) {
-                    e.target.classList.add('active'); 
-                }
-            });
+            entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
         }, { threshold: 0.1 });
-
         document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
 
-        // Gestion du Switcher de Thème
         const toggle = document.getElementById('theme-toggle');
         const icon = document.getElementById('theme-icon');
-
         const applyTheme = (t) => {
-            if(t === "light") { 
-                document.documentElement.setAttribute("data-theme", "light"); 
-                icon.innerText = "☀️"; 
-            } else { 
-                document.documentElement.removeAttribute("data-theme"); 
-                icon.innerText = "🌙"; 
-            }
+            if(t === "light") { document.documentElement.setAttribute("data-theme", "light"); icon.innerText = "☀️"; }
+            else { document.documentElement.removeAttribute("data-theme"); icon.innerText = "🌙"; }
         };
-
         toggle.onclick = () => {
             const t = document.documentElement.hasAttribute("data-theme") ? "dark" : "light";
-            localStorage.setItem("theme", t); 
-            applyTheme(t);
+            localStorage.setItem("theme", t); applyTheme(t);
         };
-
-        // Chargement du thème au démarrage
         applyTheme(localStorage.getItem("theme") || "dark");
     </script>
 

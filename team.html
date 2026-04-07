@@ -99,7 +99,14 @@
     </style>
 </head>
 <body>
-    <div class="nav-wrapper"><nav><a href="index.html">Accueil</a><a href="team.html" class="active">Équipe</a><a href="leaderboard.html">Leaderboard</a></nav></div>
+    <div class="nav-wrapper">
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="team.html" class="active">Équipe</a>
+            <a href="leaderboard.html">Leaderboard</a>
+            <a href="download.html">Télécharger</a>
+        </nav>
+    </div>
     
     <div class="theme-switch" id="theme-toggle">
         <div class="switch-dot" id="theme-icon">🌙</div>
@@ -133,18 +140,12 @@
         const toggle = document.getElementById('theme-toggle');
         const icon = document.getElementById('theme-icon');
         const applyTheme = (t) => {
-            if(t === "light") {
-                document.documentElement.setAttribute("data-theme", "light");
-                icon.innerText = "☀️";
-            } else {
-                document.documentElement.removeAttribute("data-theme");
-                icon.innerText = "🌙";
-            }
+            if(t === "light") { document.documentElement.setAttribute("data-theme", "light"); icon.innerText = "☀️"; }
+            else { document.documentElement.removeAttribute("data-theme"); icon.innerText = "🌙"; }
         };
         toggle.onclick = () => {
             const t = document.documentElement.hasAttribute("data-theme") ? "dark" : "light";
-            localStorage.setItem("theme", t);
-            applyTheme(t);
+            localStorage.setItem("theme", t); applyTheme(t);
         };
         applyTheme(localStorage.getItem("theme") || "dark");
     </script>
