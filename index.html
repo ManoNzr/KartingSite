@@ -1,55 +1,115 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8"><title>Elite Racing | Accueil</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Racing | Accueil</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="nav-wrapper"><nav><a href="index.html" class="active">Accueil</a><a href="team.html">Équipe</a><a href="leaderboard.html">Leaderboard</a></nav></div>
+
+    <div class="nav-wrapper">
+        <nav>
+            <a href="index.html" class="active">Accueil</a>
+            <a href="team.html">Équipe</a>
+            <a href="leaderboard.html">Leaderboard</a>
+        </nav>
+    </div>
     
-    <div class="theme-switch" id="theme-toggle"><div class="switch-dot" id="theme-icon">🌙</div></div>
+    <div class="theme-switch" id="theme-toggle">
+        <div class="switch-dot" id="theme-icon">🌙</div>
+    </div>
 
     <section class="hero-title-centered">
-        <h1 class="reveal" style="font-size: clamp(60px, 12vw, 140px); font-weight: 800; letter-spacing: -4px;">Elite Racing.</h1>
-        <p class="reveal" style="font-size: 20px; color: var(--accent); font-weight: 700; letter-spacing: 6px; text-transform: uppercase;">Next-Gen Browser Racing</p>
+        <h1 class="reveal" style="font-size: clamp(60px, 12vw, 140px); font-weight: 800; letter-spacing: -4px; line-height: 0.9;">
+            Elite Racing.
+        </h1>
+        <p class="reveal" style="font-size: 18px; color: var(--accent); font-weight: 700; letter-spacing: 6px; text-transform: uppercase; margin-top: 20px;">
+            Next-Gen Browser Racing
+        </p>
         <div class="reveal" style="margin-top: 50px; animation: bounce 2s infinite; font-size: 30px; opacity: 0.3;">↓</div>
     </section>
 
     <div style="max-width: 1100px; margin: auto; padding: 0 20px;">
-        <div class="reveal video-container" style="margin-bottom: 100px;">
-            <iframe src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=0&mute=1&rel=0&modestbranding=1" allowfullscreen></iframe>
+
+        <div class="reveal video-container" style="margin-bottom: 100px; position: relative; width: 100%; border-radius: 32px; overflow: hidden; background: #000; box-shadow: var(--shadow-soft); border: 1px solid var(--border);">
+            <div style="padding-top: 56.25%;"> <iframe 
+                    src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=0&mute=1&rel=0&modestbranding=1" 
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" 
+                    allowfullscreen>
+                </iframe>
+            </div>
         </div>
 
-        <h2 class="reveal" style="font-size: 40px; text-align: center; margin-bottom: 40px;">Immersion totale.</h2>
+        <h2 class="reveal" style="font-size: clamp(32px, 5vw, 48px); text-align: center; margin-bottom: 60px; font-weight: 800;">
+            Immersion totale.
+        </h2>
+
         <div class="gallery-grid">
-            <div class="reveal gallery-item wide"><h3>Vitesse Pure</h3></div>
-            <div class="reveal gallery-item"><h3>Physiques Drift</h3></div>
-            <div class="reveal gallery-item"><h3>Global Leaderboard</h3></div>
+            <div class="reveal gallery-item wide">
+                <div style="padding: 40px; width: 100%; height: 100%; display: flex; align-items: flex-end; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);">
+                    <h3 style="color: white; font-size: 24px;">Vitesse Pure</h3>
+                </div>
+            </div>
+            <div class="reveal gallery-item">
+                <div style="padding: 30px; width: 100%; height: 100%; display: flex; align-items: flex-end;">
+                    <h3 style="font-size: 20px;">Physiques Drift</h3>
+                </div>
+            </div>
+            <div class="reveal gallery-item">
+                <div style="padding: 30px; width: 100%; height: 100%; display: flex; align-items: flex-end;">
+                    <h3 style="font-size: 20px;">Global Leaderboard</h3>
+                </div>
+            </div>
         </div>
 
-        <section style="text-align: center; padding: 100px 0 200px;">
-            <h2 class="reveal" style="font-size: 55px; font-weight: 800; margin-bottom: 40px;">Prêt à entrer dans <br><span style="color: var(--accent);">la légende ?</span></h2>
-            <a href="leaderboard.html" class="reveal cta-massive">DÉFIER LE CLASSEMENT</a>
+        <section style="text-align: center; padding: 120px 0 200px;">
+            <h2 class="reveal" style="font-size: clamp(40px, 8vw, 65px); font-weight: 800; margin-bottom: 40px; line-height: 1.1;">
+                Prêt à entrer dans <br><span style="color: var(--accent);">la légende ?</span>
+            </h2>
+            <div class="reveal">
+                <a href="leaderboard.html" class="cta-massive">DÉFIER LE CLASSEMENT</a>
+            </div>
         </section>
+
     </div>
 
     <script>
+        // Gestion de l'apparition au scroll (Reveal)
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
+            entries.forEach(e => { 
+                if(e.isIntersecting) {
+                    e.target.classList.add('active'); 
+                }
+            });
         }, { threshold: 0.1 });
+
         document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
 
+        // Gestion du Switcher de Thème
         const toggle = document.getElementById('theme-toggle');
         const icon = document.getElementById('theme-icon');
+
         const applyTheme = (t) => {
-            if(t === "light") { document.documentElement.setAttribute("data-theme", "light"); icon.innerText = "☀️"; }
-            else { document.documentElement.removeAttribute("data-theme"); icon.innerText = "🌙"; }
+            if(t === "light") { 
+                document.documentElement.setAttribute("data-theme", "light"); 
+                icon.innerText = "☀️"; 
+            } else { 
+                document.documentElement.removeAttribute("data-theme"); 
+                icon.innerText = "🌙"; 
+            }
         };
+
         toggle.onclick = () => {
             const t = document.documentElement.hasAttribute("data-theme") ? "dark" : "light";
-            localStorage.setItem("theme", t); applyTheme(t);
+            localStorage.setItem("theme", t); 
+            applyTheme(t);
         };
+
+        // Chargement du thème au démarrage
         applyTheme(localStorage.getItem("theme") || "dark");
     </script>
+
 </body>
 </html>
