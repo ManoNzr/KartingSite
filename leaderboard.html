@@ -147,8 +147,8 @@
     </div>
     
     <div class="theme-switch" id="theme-toggle">
-        <div class="switch-dot" id="theme-icon">🌙</div>
-    </div>
+		<div class="switch-dot" id="theme-icon">🌙</div>
+	</div>
 
     <section class="hero-title-centered" style="height: 35vh;">
         <h1 class="reveal active" style="font-size: clamp(40px, 10vw, 80px); font-weight: 800; letter-spacing: -3px;">Classement.</h1>
@@ -301,30 +301,30 @@
 		document.getElementById('sort-order').addEventListener('change', () => { currentPage = 1; displayPlayers(); });
 		window.addEventListener('DOMContentLoaded', loadLB);
 
-		// --- LOGIQUE THEME (Copie-colle ton code de toggle ici) ---
+		// --- 2. LOGIQUE DU THÈME (FIXED) ---
+		const toggle = document.getElementById('theme-toggle');
+		const icon = document.getElementById('theme-icon');
 
-        document.getElementById('search-player').addEventListener('input', updateTable);
-        document.getElementById('sort-order').addEventListener('change', updateTable);
-        window.addEventListener('DOMContentLoaded', loadLB);
+		const applyTheme = (t) => {
+			if (t === "light") {
+				document.documentElement.setAttribute("data-theme", "light");
+				icon.innerText = "☀️";
+			} else {
+				document.documentElement.removeAttribute("data-theme");
+				icon.innerText = "🌙";
+			}
+		};
 
-        // --- LOGIQUE DU TOGGLE (Check style.css pour l'animation) ---
-        const toggle = document.getElementById('theme-toggle');
-        const icon = document.getElementById('theme-icon');
-        const applyTheme = (t) => {
-            if(t === "light") { 
-                document.documentElement.setAttribute("data-theme", "light"); 
-                icon.innerText = "☀️"; 
-            } else { 
-                document.documentElement.removeAttribute("data-theme"); 
-                icon.innerText = "🌙"; 
-            }
-        };
-        toggle.onclick = () => {
-            const t = document.documentElement.hasAttribute("data-theme") ? "dark" : "light";
-            localStorage.setItem("theme", t); 
-            applyTheme(t);
-        };
-        applyTheme(localStorage.getItem("theme") || "dark");
+
+		toggle.onclick = () => {
+			const current = document.documentElement.hasAttribute("data-theme") ? "dark" : "light";
+			localStorage.setItem("theme", current);
+			applyTheme(current);
+		};
+
+		// Charger le thème sauvegardé au démarrage
+		const savedTheme = localStorage.getItem("theme") || "dark";
+		applyTheme(savedTheme);
     </script>
 </body>
 </html>
