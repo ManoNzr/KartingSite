@@ -1,33 +1,173 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8"><title>Leaderboard | Elite Racing</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard | Elite Racing</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* --- DESIGN DE LA BARRE D'ACTION --- */
+        .action-bar {
+            max-width: 900px;
+            margin: 0 auto 30px auto;
+            display: flex;
+            gap: 15px;
+            padding: 0 20px;
+        }
+
+        .search-wrapper { flex: 2; position: relative; }
+
+        .search-input {
+            width: 100%;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 16px 20px;
+            border-radius: 18px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            backdrop-filter: blur(15px);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 25px rgba(255, 45, 85, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* --- LA DROPBOX STYLISÉE (SELECT CUSTOM) --- */
+        .sort-wrapper {
+            flex: 1;
+            position: relative;
+            min-width: 180px;
+        }
+
+        /* L'icône de la flèche personnalisée */
+        .sort-wrapper::after {
+            content: '↓';
+            font-size: 14px;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            pointer-events: none; /* Pour pouvoir cliquer à travers */
+            transition: 0.3s;
+        }
+
+        .sort-wrapper:hover::after { transform: translateY(-30%); }
+
+        .sort-select {
+            width: 100%;
+            appearance: none; /* Supprime le style moche par défaut */
+            -webkit-appearance: none;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 16px 45px 16px 20px; /* Plus d'espace à droite pour la flèche */
+            border-radius: 18px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(15px);
+            outline: none;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sort-select:focus, .sort-select:hover {
+            border-color: var(--text-dim);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        /* Style des options (Limité par les navigateurs, mais on nettoie) */
+        .sort-select option {
+            background: #1c1c1e; /* Fond sombre forcé */
+            color: white;
+            padding: 10px;
+        }
+
+        /* --- MÉDAILLES --- */
+        .rank-badge.gold { background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+        .rank-badge.silver { background: linear-gradient(135deg, #E0E0E0, #8E8E93); color: #000; box-shadow: 0 4px 15px rgba(142, 142, 147, 0.3); }
+        .rank-badge.bronze { background: linear-gradient(135deg, #CD7F32, #8C592E); color: #fff; box-shadow: 0 4px 15px rgba(205, 127, 50, 0.3); }
+
+        @media (max-width: 600px) { .action-bar { flex-direction: column; } }
+    </style>
 </head>
 <body>
     <div class="nav-wrapper"><nav><a href="index.html">Accueil</a><a href="team.html">Équipe</a><a href="leaderboard.html" class="active">Leaderboard</a></nav></div>
     
     <div class="theme-switch" id="theme-toggle"><div class="switch-dot" id="theme-icon">🌙</div></div>
 
-    <section class="hero-title-centered" style="height: 60vh;">
-        <h1 class="reveal active" style="font-size: 80px; font-weight: 800;">Classement.</h1>
+    <section class="hero-title-centered" style="height: 45vh;">
+        <h1 class="reveal active" style="font-size: clamp(40px, 10vw, 80px); font-weight: 800; letter-spacing: -3px;">Classement.</h1>
     </section>
+
+    <div class="action-bar reveal active">
+        <div class="search-wrapper">
+            <input type="text" id="search-player" class="search-input" placeholder="Chercher un pilote...">
+        </div>
+        <div class="sort-wrapper">
+            <select id="sort-order" class="sort-select">
+                <option value="rank">Rang (Top 1)</option>
+                <option value="name-asc">Nom (A-Z)</option>
+                <option value="name-desc">Nom (Z-A)</option>
+            </select>
+        </div>
+    </div>
 
     <div style="max-width: 900px; margin: auto; padding: 0 20px 150px; display: flex; justify-content: center;">
         <div class="reveal active glass-card">
             <table>
-                <thead style="background: rgba(255,255,255,0.02);"><tr style="font-size: 11px; color: var(--text-dim);"><th style="padding-left: 25px;">RANG</th><th>PILOTE</th><th style="text-align: right; padding-right: 40px;">CHRONO</th></tr></thead>
+                <thead style="background: rgba(255,255,255,0.02);">
+                    <tr style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px;">
+                        <th style="padding-left: 25px; width: 100px;">RANG</th>
+                        <th>PILOTE</th>
+                        <th style="text-align: right; padding-right: 40px;">CHRONO</th>
+                    </tr>
+                </thead>
                 <tbody id="table-body"></tbody>
             </table>
         </div>
     </div>
 
     <script>
+        let allPlayers = [];
+
         function formatChrono(ms) {
             let mins = Math.floor(ms / 60000);
             let secs = Math.floor((ms % 60000) / 1000);
             let mms = ms % 1000;
             return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}:${mms.toString().padStart(3, '0')}`;
+        }
+
+        function displayPlayers(players) {
+            const body = document.getElementById('table-body');
+            body.innerHTML = '';
+            players.forEach(item => {
+                let badgeClass = item.rank === 1 ? 'gold' : item.rank === 2 ? 'silver' : item.rank === 3 ? 'bronze' : 'other-rank';
+                body.innerHTML += `
+                    <tr>
+                        <td style="padding-left: 25px;"><div class="rank-badge ${badgeClass}">${item.rank}</div></td>
+                        <td style="font-weight: 700; color: var(--text);">${item.player.name || "Ace"}</td>
+                        <td style="text-align: right; padding-right: 40px; font-family: monospace; font-weight: 800; color: var(--accent); font-size: 20px;">${formatChrono(item.score)}</td>
+                    </tr>`;
+            });
+        }
+
+        function updateTable() {
+            const searchTerm = document.getElementById('search-player').value.toLowerCase();
+            const sortVal = document.getElementById('sort-order').value;
+            let filtered = allPlayers.filter(p => (p.player.name || "Ace").toLowerCase().includes(searchTerm));
+
+            if (sortVal === "rank") filtered.sort((a, b) => a.rank - b.rank);
+            else if (sortVal === "name-asc") filtered.sort((a, b) => (a.player.name || "Ace").localeCompare(b.player.name || "Ace"));
+            else if (sortVal === "name-desc") filtered.sort((a, b) => (b.player.name || "Ace").localeCompare(a.player.name || "Ace"));
+
+            displayPlayers(filtered);
         }
 
         async function loadLB() {
@@ -38,23 +178,18 @@
                     body: JSON.stringify({game_key: API_KEY, game_version: "0.1.0.0", development_mode: true})
                 }).then(r => r.json());
 
-                const lb = await fetch("https://api.lootlocker.io/game/leaderboards/33908/list?count=15", {
+                const lb = await fetch("https://api.lootlocker.io/game/leaderboards/33908/list?count=50", {
                     method: "GET", headers: {"x-session-token": auth.session_token}
                 }).then(r => r.json());
 
-                const body = document.getElementById('table-body');
-                lb.items.forEach(item => {
-                    let badgeClass = item.rank === 1 ? 'gold' : item.rank === 2 ? 'silver' : item.rank === 3 ? 'bronze' : 'other-rank';
-                    body.innerHTML += `
-                        <tr>
-                            <td style="padding-left: 25px;"><div class="rank-badge ${badgeClass}">${item.rank}</div></td>
-                            <td style="font-weight: 600; color: var(--text);">${item.player.name || "Inconnu"}</td>
-                            <td style="text-align: right; padding-right: 40px; font-family: monospace; font-weight: 800; color: var(--accent); font-size: 20px;">${formatChrono(item.score)}</td>
-                        </tr>`;
-                });
-            } catch(e) { console.error("Erreur API", e); }
+                allPlayers = lb.items;
+                displayPlayers(allPlayers);
+            } catch(e) { console.error(e); }
         }
-        loadLB();
+
+        document.getElementById('search-player').addEventListener('input', updateTable);
+        document.getElementById('sort-order').addEventListener('change', updateTable);
+        window.onload = loadLB;
 
         const toggle = document.getElementById('theme-toggle');
         const icon = document.getElementById('theme-icon');
