@@ -94,7 +94,13 @@
 
         @media (max-width: 750px) {
             .team-grid-progs, .team-grid-arts { flex-wrap: wrap; }
-            .flip-card { width: calc(50% - 13px); }
+            .flip-card { width: calc(50% - 15px); }
+        }
+
+        /* NOUVEAU : Sur les très petits téléphones, on passe à 1 carte par ligne ! */
+        @media (max-width: 480px) {
+            .flip-card { width: 100%; max-width: 260px; }
+            .team-grid-progs, .team-grid-arts { gap: 20px; }
         }
     </style>
 </head>
