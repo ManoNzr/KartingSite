@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"><title>Équipe | Elite Racing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="nav-wrapper"><nav><a href="index.html">Accueil</a><a href="team.html" class="active">Équipe</a><a href="leaderboard.html">Leaderboard</a></nav></div>
+    
+    <div class="theme-switch" id="theme-toggle">
+        <div class="switch-dot" id="theme-icon">🌙</div>
+    </div>
+
+    <section class="hero-title-centered" style="height: 50vh;">
+        <h1 class="reveal active" style="font-size: clamp(50px, 8vw, 80px); font-weight: 800; letter-spacing: -3px;">Les Créateurs.</h1>
+        <p class="reveal active" style="color: var(--accent); font-weight: 700; letter-spacing: 5px; text-transform: uppercase; margin-top: 10px;">Elite Team</p>
+    </section>
+
+    <div style="max-width: 1100px; margin: auto; padding: 0 20px 150px;">
+        
+        <h2 class="reveal active" style="margin-bottom: 30px; font-size: 14px; letter-spacing: 3px; color: var(--text-dim); text-align: center;">01. GAME PROGS</h2>
+        <div class="team-grid" style="margin-bottom: 80px;">
+            <div class="reveal active flip-card"><div class="flip-card-inner"><div class="card-front"><div class="member-photo"></div><h3>Dev 1</h3><p style="color:var(--accent)">Lead Engine</p></div><div class="card-back"><p>Expert Shaders</p></div></div></div>
+            <div class="reveal active flip-card"><div class="flip-card-inner"><div class="card-front"><div class="member-photo"></div><h3>Dev 2</h3><p style="color:var(--accent)">Physics</p></div><div class="card-back"><p>Moteur Physique</p></div></div></div>
+            <div class="reveal active flip-card"><div class="flip-card-inner"><div class="card-front"><div class="member-photo"></div><h3>Dev 3</h3><p style="color:var(--accent)">Network</p></div><div class="card-back"><p>Multiplayer logic</p></div></div></div>
+            <div class="reveal active flip-card"><div class="flip-card-inner"><div class="card-front"><div class="member-photo"></div><h3>Dev 4</h3><p style="color:var(--accent)">Backend</p></div><div class="card-back"><p>API LootLocker</p></div></div></div>
+        </div>
+
+        <h2 class="reveal active" style="margin-bottom: 30px; font-size: 14px; letter-spacing: 3px; color: var(--text-dim); text-align: center;">02. GAME ARTS</h2>
+        <div class="team-grid">
+            <div class="reveal active flip-card"><div class="flip-card-inner"><div class="card-front"><div class="member-photo"></div><h3>Artist 1</h3><p style="color:var(--accent)">VFX Artist</p></div><div class="card-back"><p>Particules & Glow</p></div></div></div>
+            <div class="reveal active flip-card"><div class="flip-card-inner"><div class="card-front"><div class="member-photo"></div><h3>Artist 2</h3><p style="color:var(--accent)">3D Modeler</p></div><div class="card-back"><p>Assets Véhicules</p></div></div></div>
+            <div class="reveal active flip-card"><div class="flip-card-inner"><div class="card-front"><div class="member-photo"></div><h3>Artist 3</h3><p style="color:var(--accent)">UI Designer</p></div><div class="card-back"><p>Interface Apple Style</p></div></div></div>
+        </div>
+    </div>
+
+    <script>
+        // LOGIQUE THEME IDENTIQUE AUX AUTRES PAGES
+        const toggle = document.getElementById('theme-toggle');
+        const icon = document.getElementById('theme-icon');
+        const applyTheme = (t) => {
+            if(t === "light") {
+                document.documentElement.setAttribute("data-theme", "light");
+                icon.innerText = "☀️";
+            } else {
+                document.documentElement.removeAttribute("data-theme");
+                icon.innerText = "🌙";
+            }
+        };
+        toggle.onclick = () => {
+            const t = document.documentElement.hasAttribute("data-theme") ? "dark" : "light";
+            localStorage.setItem("theme", t);
+            applyTheme(t);
+        };
+        applyTheme(localStorage.getItem("theme") || "dark");
+    </script>
+</body>
+</html>
