@@ -177,6 +177,11 @@
             </table>
         </div>
     </div>
+	<div class="pagination reveal active">
+        <button id="prev-btn" class="page-btn" onclick="changePage(-1)" disabled>PRÉCÉDENT</button>
+        <span id="page-info">PAGE 1</span>
+        <button id="next-btn" class="page-btn" onclick="changePage(1)">SUIVANT</button>
+    </div>
 	
 	<footer class="site-footer">
     <div class="footer-container">
@@ -195,91 +200,103 @@
 	</footer>
 
     <script>
-        // --- LOGIQUE JS ROBUSTE (Ne pas toucher, c'est le moteur !) ---
         let allPlayers = [];
+		let currentPage = 1;
+		const itemsPerPage = 10; // On en affiche 10 par 10
 
-        function formatChrono(ms) {
-            let mins = Math.floor(ms / 60000);
-            let secs = Math.floor((ms % 60000) / 1000);
-            let mms = ms % 1000;
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}:${mms.toString().padStart(3, '0')}`;
-        }
+		function formatChrono(ms) {
+			let mins = Math.floor(ms / 60000);
+			let secs = Math.floor((ms % 60000) / 1000);
+			let mms = ms % 1000;
+			return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}:${mms.toString().padStart(3, '0')}`;
+		}
 
-        function displayPlayers(players) {
-            const body = document.getElementById('table-body');
-            if (!body) return;
-            body.innerHTML = '';
+		function displayPlayers() {
+			const body = document.getElementById('table-body');
+			const searchTerm = document.getElementById('search-player').value.toLowerCase();
+			
+			// 1. Filtrer
+			let filtered = allPlayers.filter(p => {
+				const name = (p.player && p.player.name) ? p.player.name.toLowerCase() : "anonyme";
+				return name.includes(searchTerm);
+			});
 
-            if (players.length === 0) {
-                body.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 40px; color: var(--text-dim);">Aucun pilote trouvé.</td></tr>';
-                return;
-            }
+			// 2. Trier (Selon le select)
+			const sortOrder = document.getElementById('sort-order').value;
+			if (sortOrder === "name-asc") {
+				filtered.sort((a, b) => (a.player?.name || "").localeCompare(b.player?.name || ""));
+			} else if (sortOrder === "name-desc") {
+				filtered.sort((a, b) => (b.player?.name || "").localeCompare(a.player?.name || ""));
+			} else {
+				filtered.sort((a, b) => a.rank - b.rank);
+			}
 
-            players.forEach(item => {
-                const playerName = (item.player && item.player.name) ? item.player.name : "Anonyme";
-                // Attribution des classes pour les médailles jolies
-                let badgeClass = item.rank === 1 ? 'gold' : item.rank === 2 ? 'silver' : item.rank === 3 ? 'bronze' : 'other-rank';
-                
-                body.innerHTML += `
-                    <tr>
-                        <td style="padding-left: 25px;"><div class="rank-badge ${badgeClass}">${item.rank}</div></td>
-                        <td style="font-weight: 700; color: var(--text);">${playerName}</td>
-                        <td style="text-align: right; padding-right: 40px; font-family: monospace; font-weight: 800; color: var(--accent); font-size: 20px;">${formatChrono(item.score)}</td>
-                    </tr>`;
-            });
-        }
+			// 3. Paginer
+			const totalPages = Math.ceil(filtered.length / itemsPerPage);
+			const start = (currentPage - 1) * itemsPerPage;
+			const end = start + itemsPerPage;
+			const paginatedItems = filtered.slice(start, end);
 
-        function updateTable() {
-            let filtered = [...allPlayers];
-            const searchTerm = document.getElementById('search-player').value.toLowerCase();
-            const sortOrder = document.getElementById('sort-order').value;
+			// 4. Afficher avec animation "one by one"
+			body.innerHTML = '';
+			
+			if (paginatedItems.length === 0) {
+				body.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 40px;">Aucun pilote.</td></tr>';
+			}
 
-            filtered = filtered.filter(p => {
-                const name = (p.player && p.player.name) ? p.player.name.toLowerCase() : "anonyme";
-                return name.includes(searchTerm);
-            });
+			paginatedItems.forEach((item, index) => {
+				const playerName = (item.player && item.player.name) ? item.player.name : "Anonyme";
+				let badgeClass = item.rank === 1 ? 'gold' : item.rank === 2 ? 'silver' : item.rank === 3 ? 'bronze' : 'other-rank';
+				
+				const row = document.createElement('tr');
+				row.className = 'row-animate';
+				// Le petit calcul magique pour le délai d'apparition
+				row.style.animationDelay = `${index * 0.05}s`; 
+				
+				row.innerHTML = `
+					<td style="padding-left: 25px;"><div class="rank-badge ${badgeClass}">${item.rank}</div></td>
+					<td style="font-weight: 700; color: var(--text);">${playerName}</td>
+					<td style="text-align: right; padding-right: 40px; font-family: monospace; font-weight: 800; color: var(--accent); font-size: 20px;">${formatChrono(item.score)}</td>
+				`;
+				body.appendChild(row);
+			});
 
-            if (sortOrder === "name-asc") {
-                filtered.sort((a, b) => {
-                    const nameA = (a.player && a.player.name) ? a.player.name : "Anonyme";
-                    const nameB = (b.player && b.player.name) ? b.player.name : "Anonyme";
-                    return nameA.localeCompare(nameB);
-                });
-            } else if (sortOrder === "name-desc") {
-                filtered.sort((a, b) => {
-                    const nameA = (a.player && a.player.name) ? a.player.name : "Anonyme";
-                    const nameB = (b.player && b.player.name) ? b.player.name : "Anonyme";
-                    return nameB.localeCompare(nameA);
-                });
-            } else {
-                filtered.sort((a, b) => a.rank - b.rank);
-            }
+			// Mettre à jour l'UI des boutons
+			document.getElementById('page-info').innerText = `PAGE ${currentPage} / ${totalPages || 1}`;
+			document.getElementById('prev-btn').disabled = currentPage === 1;
+			document.getElementById('next-btn').disabled = currentPage >= totalPages;
+		}
 
-            displayPlayers(filtered);
-        }
+		function changePage(direction) {
+			currentPage += direction;
+			displayPlayers();
+			window.scrollTo({ top: 200, behavior: 'smooth' }); // Petit scroll auto
+		}
 
-        async function loadLB() {
-            const body = document.getElementById('table-body');
-            body.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 40px;">Chargement du classement...</td></tr>';
-            
-            try {
-                const API_KEY = "dev_3c4618fd7ae34068a8891dd75abc4dd1";
-                const auth = await fetch("https://api.lootlocker.io/game/v2/session/guest", {
-                    method: "POST", headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({game_key: API_KEY, game_version: "0.1.0.0", development_mode: true})
-                }).then(r => r.json());
-                
-                const lb = await fetch("https://api.lootlocker.io/game/leaderboards/33908/list?count=50", {
-                    method: "GET", headers: {"x-session-token": auth.session_token}
-                }).then(r => r.json());
-                
-                allPlayers = lb.items || [];
-                updateTable();
-            } catch(e) { 
-                console.error(e); 
-                body.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 40px; color: var(--accent);">Erreur de connexion aux serveurs.</td></tr>';
-            }
-        }
+		async function loadLB() {
+			try {
+				const API_KEY = "dev_3c4618fd7ae34068a8891dd75abc4dd1";
+				const auth = await fetch("https://api.lootlocker.io/game/v2/session/guest", {
+					method: "POST", headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({game_key: API_KEY, game_version: "0.1.0.0", development_mode: true})
+				}).then(r => r.json());
+				
+				// On récupère un gros paquet de joueurs (ex: 100) pour pouvoir paginer
+				const lb = await fetch("https://api.lootlocker.io/game/leaderboards/33908/list?count=100", {
+					method: "GET", headers: {"x-session-token": auth.session_token}
+				}).then(r => r.json());
+				
+				allPlayers = lb.items || [];
+				displayPlayers();
+			} catch(e) { console.error(e); }
+		}
+
+		// Listeners
+		document.getElementById('search-player').addEventListener('input', () => { currentPage = 1; displayPlayers(); });
+		document.getElementById('sort-order').addEventListener('change', () => { currentPage = 1; displayPlayers(); });
+		window.addEventListener('DOMContentLoaded', loadLB);
+
+		// --- LOGIQUE THEME (Copie-colle ton code de toggle ici) ---
 
         document.getElementById('search-player').addEventListener('input', updateTable);
         document.getElementById('sort-order').addEventListener('change', updateTable);

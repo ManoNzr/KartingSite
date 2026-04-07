@@ -90,17 +90,66 @@ nav a:hover, nav a.active { opacity: 1; color: var(--accent); }
 table { width: 100%; border-collapse: collapse; }
 td, th { padding: 15px; text-align: left; border-bottom: 1px solid var(--border); }
 
+/* --- PAGINATION STYLE --- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.page-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    backdrop-filter: blur(10px);
+}
+
+.page-btn:hover:not(:disabled) {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.page-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+#page-info {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* --- ANIMATION ONE-BY-ONE --- */
+@keyframes slideInRow {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.row-animate {
+    animation: slideInRow 0.4s ease forwards;
+    opacity: 0; /* Caché au début */
+}
+
 /* --- FOOTER ULTRA-DISCRET --- */
 .site-footer {
     margin-top: 100px; /* Espace avec le reste */
     padding: 30px 40px;
     border-top: 1px solid var(--border);
-    opacity: 0.3; /* Très fondu dans le décor */
+    opacity: 0.35; /* Très fondu dans le décor */
     transition: opacity 0.5s ease;
 }
 
 .site-footer:hover {
-    opacity: 0.9; /* S'affiche mieux au survol */
+    opacity: 0.95; /* S'affiche mieux au survol */
 }
 
 .footer-container {
