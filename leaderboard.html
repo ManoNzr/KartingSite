@@ -116,12 +116,17 @@
         }
 
         /* --- 4. Effet Hover sur les lignes du tableau --- */
-        tr { transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        tr td { transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
         tr:hover td {
             background: rgba(255, 45, 85, 0.05) !important; /* Léger fond rouge */
-            transform: scale(1.01) translateX(5px); /* Grossit et se décale */
-            border-bottom-color: var(--accent);
+            border-bottom-color: var(--accent); /* Barre rouge en bas */
+        }
+        
+        /* Au lieu d'agrandir toute la ligne et de créer une scrollbar, 
+           on décale juste le nom du joueur en douceur ! */
+        tr:hover td:nth-child(2) {
+            padding-left: 10px; 
         }
         
         /* Petit fix responsive pour la barre d'action */
