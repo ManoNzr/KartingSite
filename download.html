@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Télécharger | GAME NAME</title>
+    <title>Télécharger | Co'Cot Racing</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chango&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -18,19 +18,18 @@
         </nav>
     </div>
     
-    <div class="theme-switch" id="theme-toggle"><div class="switch-dot" id="theme-icon">🌙</div></div>
 
 	<section class="hero-title-centered" style="height: 35vh;">
-        <h1 class="reveal active" style="font-size: clamp(50px, 8vw, 80px); font-weight: 800; letter-spacing: -3px;">Prêt à piloter ?</h1>
+        <h1 class="reveal active" style="font-size: clamp(50px, 8vw, 80px); letter-spacing: -3px;">Prêt à piloter ?</h1>
         <!-- <p class="reveal active" style="color: var(--accent); font-weight: 700; letter-spacing: 5px; text-transform: uppercase; margin-top: 10px;">Elite Team</p> -->
     </section>
 
     <section class="hero-title-centered" style="height: 5vh; min-height: 0px;">
-        <p class="reveal active" style="margin-top: 75px; color: var(--text-dim);">Dernière version : 0.0.0 ALPHA (Windows / Mac)</p>
+        <p class="reveal active" style="margin-top: 75px; color: var(--text-dim);">Télécharger la dernière version ici, pour windows et macOs !</p>
         
         <div class="reveal active" style="margin-top: 50px; display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
-            <a href="builds/EliteRacing_Win.zip" class="cta-massive">TÉLÉCHARGER POUR PC</a>
-            <a href="builds/EliteRacing_Mac.zip" class="cta-massive">TÉLÉCHARGER POUR MAC</a>
+            <a href="builds/EliteRacing_Win.zip" class="cta-massive">Windows</a>
+            <a href="builds/EliteRacing_Mac.zip" class="cta-massive">MacOs</a>
         </div>
     </section>
 
@@ -44,7 +43,7 @@
     <div class="footer-container">
         <div class="footer-block">
             <span class="footer-label">Projet</span>
-            <span class="footer-text">GAME NAME — Build 0.0.0-Alpha</span>
+            <span class="footer-text">Co'Cot Racing — Build 0.0.0-Alpha</span>
             <span class="footer-text">Rubika Réunion / 2026</span>
         </div>
 
@@ -56,22 +55,6 @@
     </div>
 	</footer>
     <script>
-        const toggle = document.getElementById('theme-toggle');
-		const icon = document.getElementById('theme-icon');
-		const applyTheme = (t) => {
-			if(t === "light") { 
-				document.documentElement.setAttribute("data-theme", "light"); 
-				icon.innerText = "☀️"; 
-			} else { 
-				document.documentElement.removeAttribute("data-theme"); 
-				icon.innerText = "🌙"; 
-			}
-		};
-		toggle.onclick = () => {
-			const t = document.documentElement.hasAttribute("data-theme") ? "dark" : "light";
-			localStorage.setItem("theme", t); applyTheme(t);
-		};
-		applyTheme(localStorage.getItem("theme") || "dark");
     </script>
 </body>
 </html>

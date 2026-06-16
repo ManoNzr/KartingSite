@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil | GAME NAME</title>
+    <title>Accueil | Co'Cot Racing</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chango&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -17,25 +17,32 @@
             <a href="download.html">Télécharger</a>
         </nav>
     </div>
-    
-    <div class="theme-switch" id="theme-toggle">
-        <div class="switch-dot" id="theme-icon">🌙</div>
-    </div>
 
+    <!-- HERO -->
     <section class="hero-title-centered">
-        <h1 class="reveal" style="font-size: clamp(60px, 12vw, 140px); font-weight: 800; letter-spacing: -4px; line-height: 0.9;">
-            GAME NAME
-        </h1>
-        <p class="reveal" style="font-size: 18px; color: var(--accent); font-weight: 700; letter-spacing: 6px; text-transform: uppercase; margin-top: 20px;">
-            PLACE HOLDER
+        <div class="hero-bubbles" aria-hidden="true">
+            <div class="hero-bubble" style="width:130px;height:130px;left:7%;top:20%;background:rgba(242,167,181,0.2);animation-delay:0s;animation-duration:6s;"></div>
+            <div class="hero-bubble" style="width:55px;height:55px;left:19%;top:68%;background:rgba(169,217,217,0.28);animation-delay:1.5s;animation-duration:8.5s;"></div>
+            <div class="hero-bubble" style="width:95px;height:95px;right:9%;top:28%;background:rgba(227,219,118,0.22);animation-delay:0.5s;animation-duration:9s;"></div>
+            <div class="hero-bubble" style="width:45px;height:45px;right:24%;top:72%;background:rgba(196,218,190,0.3);animation-delay:2s;animation-duration:7s;"></div>
+            <div class="hero-bubble" style="width:70px;height:70px;left:50%;top:12%;background:rgba(109,134,162,0.14);animation-delay:3s;animation-duration:11s;"></div>
+            <div class="hero-bubble" style="width:40px;height:40px;left:36%;top:80%;background:rgba(242,167,181,0.22);animation-delay:4s;animation-duration:8s;"></div>
+            <div class="hero-bubble" style="width:80px;height:80px;left:3%;top:55%;background:rgba(169,217,217,0.15);animation-delay:5s;animation-duration:10s;"></div>
+        </div>
+
+        <img src="assets/img/Titre_logo.png" class="reveal" alt="Co'Cot Racing"
+             style="max-width: min(800px, 92vw); filter: drop-shadow(0 8px 30px rgba(109, 134, 162, 0.25)); position: relative; z-index: 1;">
+        <p class="reveal" style="font-family: 'Chango', cursive; font-size: 15px; color: var(--secondary); letter-spacing: 5px; text-transform: uppercase; margin-top: 22px; position: relative; z-index: 1; opacity: 0.8;">
+            Kart &middot; Bulles &middot; Poussins
         </p>
-        <div class="reveal" style="margin-top: 50px; animation: bounce 2s infinite; font-size: 30px; opacity: 0.3;">↓</div>
+        <div class="reveal" style="margin-top: 48px; animation: bounce 2s infinite; font-size: 28px; color: var(--text-dim); opacity: 0.5; position: relative; z-index: 1;">↓</div>
     </section>
 
     <div style="max-width: 1400px; margin: auto; padding: 0 40px;">
 
+        <!-- Vidéo -->
         <div class="reveal video-container" style="
-            margin: 0 auto 200px auto;
+            margin: 0 auto 120px auto;
             position: relative;
             width: 80%;
             border-radius: 32px;
@@ -43,85 +50,98 @@
             background: #000;
             box-shadow: var(--shadow-soft);
             border: 1px solid var(--border);">
-
-            <div style="padding-top: 56.25%;"> <iframe 
-                    src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=0&mute=1&rel=0&modestbranding=1" 
-                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" 
+            <div style="padding-top: 56.25%;">
+                <iframe
+                    src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=0&mute=1&rel=0&modestbranding=1"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
                     allowfullscreen>
                 </iframe>
             </div>
         </div>
 
-        <h2 class="reveal" style="font-size: clamp(32px, 5vw, 48px); text-align: center; margin-bottom: 60px; font-weight: 800;">
-            Immersion totale.
+        <!-- Galerie -->
+        <h2 class="reveal" style="font-size: clamp(30px, 5vw, 44px); text-align: center; margin-bottom: 50px;">
+            Le jeu
         </h2>
 
         <div class="gallery-grid">
-            <div class="reveal gallery-item wide">
-                <div style="padding: 40px; width: 100%; height: 100%; display: flex; align-items: flex-end; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);">
-                    <h3 style="color: #C8FFFFFF; font-size: 24px;">Vitesse Pure</h3>
+            <div class="reveal gallery-item wide" style="background: url('assets/img/écran_titre.png') center center / cover no-repeat; height: 400px;">
+                <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(50,70,100,0.82) 0%, transparent 55%); display: flex; align-items: flex-end; padding: 40px;">
+                    <div>
+                        <h3 style="color: white; font-size: 26px; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">Co'Cot Racing</h3>
+                        <p style="color: rgba(255,255,255,0.8); font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.5;">Un monde pastel où chaque virage est une nouvelle aventure.</p>
+                    </div>
                 </div>
             </div>
-            <div class="reveal gallery-item">
-                <div style="padding: 30px; width: 100%; height: 100%; display: flex; align-items: flex-end;">
-                    <h3 style="font-size: 20px;">Physiques Drift</h3>
-                </div>
+
+            <div class="reveal gallery-item" style="background: linear-gradient(145deg, rgba(242,167,181,0.2) 0%, rgba(255,255,255,0.7) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 36px 24px;">
+                <img src="assets/img/Volant_menu_ombre.png" style="width: 130px; filter: drop-shadow(0 4px 14px rgba(109,134,162,0.3));" alt="Kart Racing">
+                <h3 style="font-size: 20px; color: var(--text);">Kart Racing</h3>
+                <p style="font-family: 'Inter', sans-serif; font-size: 13px; color: var(--text-dim); text-align: center; line-height: 1.65;">Physiques drift précises, sensations de vitesse et virages au poil de poussin.</p>
             </div>
-            <div class="reveal gallery-item">
-                <div style="padding: 30px; width: 100%; height: 100%; display: flex; align-items: flex-end;">
-                    <h3 style="font-size: 20px;">Global Leaderboard</h3>
-                </div>
+
+            <div class="reveal gallery-item" style="background: linear-gradient(145deg, rgba(169,217,217,0.25) 0%, rgba(255,255,255,0.7) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 36px 24px;">
+                <img src="assets/img/Curseur_bubulle.png" style="width: 100px; filter: drop-shadow(0 4px 14px rgba(109,134,162,0.25));" alt="Style Bubbly">
+                <h3 style="font-size: 20px; color: var(--text);">Style Bubbly</h3>
+                <p style="font-family: 'Inter', sans-serif; font-size: 13px; color: var(--text-dim); text-align: center; line-height: 1.65;">DA unique inspirée des poussins et des bulles de savon pastel.</p>
             </div>
         </div>
 
-        <section style="text-align: center; padding: 120px 0 200px;">
-            <h2 class="reveal" style="font-size: clamp(40px, 8vw, 65px); font-weight: 800; margin-bottom: 40px; line-height: 1.1;">
-                Prêt à entrer dans <br><span style="color: var(--accent);">la légende ?</span>
+        <!-- Features -->
+        <div class="features-row">
+            <div class="feature-card reveal" style="border-color: rgba(242,167,181,0.4);">
+                <div class="feature-icon" style="background: rgba(242,167,181,0.2); color: #b86070;">🏆</div>
+                <h3>Leaderboard Global</h3>
+                <p>Bats les records du monde entier et prouve que tu es le meilleur pilote de Co'Cot.</p>
+            </div>
+            <div class="feature-card reveal" style="border-color: rgba(169,217,217,0.45);">
+                <div class="feature-icon" style="background: rgba(169,217,217,0.25); color: #3a7a7a;">🎮</div>
+                <h3>Physiques Uniques</h3>
+                <p>Un système de kart pensé pour le drift et la précision à chaque courbe.</p>
+            </div>
+            <div class="feature-card reveal" style="border-color: rgba(227,219,118,0.45);">
+                <div class="feature-icon" style="background: rgba(227,219,118,0.25); color: #7a6a10;">✨</div>
+                <h3>DA Originale</h3>
+                <p>Bulles, poussins et couleurs pastels — un univers doux et plein de vie.</p>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <section style="text-align: center; padding: 100px 0 160px;">
+            <h2 class="reveal" style="font-size: clamp(34px, 7vw, 58px); margin-bottom: 16px; line-height: 1.15;">
+                Prêt à entrer dans<br><span style="color: var(--accent);">la légende ?</span>
             </h2>
-            <div class="reveal" style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
-                <a href="download.html" class="cta-massive" style="background: var(--text); color: var(--bg);">TÉLÉCHARGER LE JEU</a>
+            <p class="reveal" style="font-family: 'Inter', sans-serif; color: var(--text-dim); margin-bottom: 52px; font-size: 16px; line-height: 1.6;">
+                Télécharge le jeu, bats les records, deviens le meilleur pilote de Co'Cot Racing.
+            </p>
+            <div class="reveal" style="display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; align-items: center;">
+                <a href="download.html" class="cta-massive">TÉLÉCHARGER</a>
                 <a href="leaderboard.html" class="cta-massive">LEADERBOARD</a>
             </div>
         </section>
 
     </div>
-	<footer class="site-footer">
-    <div class="footer-container">
-        <div class="footer-block">
-            <span class="footer-label">Projet</span>
-            <span class="footer-text">GAME NAME — Build 0.0.0-Alpha</span>
-            <span class="footer-text">Rubika Réunion / 2026</span>
-        </div>
 
-        <div class="footer-block" style="text-align: right;">
-            <span class="footer-label">Développement</span>
-            <span class="footer-text">© Team NOM DU GROUPE — Tous droits réservés</span>
-            <span class="footer-text">Game Design & Programming Campus</span>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-block">
+                <span class="footer-label">Projet</span>
+                <span class="footer-text">Co'Cot Racing — Build 0.0.0-Alpha</span>
+                <span class="footer-text">Rubika Réunion / 2026</span>
+            </div>
+            <div class="footer-block" style="text-align: right;">
+                <span class="footer-label">Développement</span>
+                <span class="footer-text">© Team NOM DU GROUPE — Tous droits réservés</span>
+                <span class="footer-text">Game Design & Programming Campus</span>
+            </div>
         </div>
-    </div>
-	</footer>
+    </footer>
+
     <script>
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
-
-        const toggle = document.getElementById('theme-toggle');
-		const icon = document.getElementById('theme-icon');
-		const applyTheme = (t) => {
-			if(t === "light") { 
-				document.documentElement.setAttribute("data-theme", "light"); 
-				icon.innerText = "☀️"; 
-			} else { 
-				document.documentElement.removeAttribute("data-theme"); 
-				icon.innerText = "🌙"; 
-			}
-		};
-		toggle.onclick = () => {
-			const t = document.documentElement.hasAttribute("data-theme") ? "dark" : "light";
-			localStorage.setItem("theme", t); applyTheme(t);
-		};
-		applyTheme(localStorage.getItem("theme") || "dark");
     </script>
 
 </body>
