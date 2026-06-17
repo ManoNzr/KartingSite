@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard | Co'Cot Racing</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Chango&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chango&display=block" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         /* =========================================
            RETOUR DES TRUCS JOLIS (CSS SPECIFIQUE)
@@ -135,6 +138,7 @@
     </style>
 </head>
 <body>
+    <div class="nav-fade"></div>
     <div class="nav-wrapper">
         <nav>
             <a href="index.html">Accueil</a>
@@ -149,6 +153,14 @@
         <h1 class="reveal active" style="font-size: clamp(50px, 8vw, 80px); letter-spacing: -3px;">Classement</h1>
         <!-- <p class="reveal active" style="color: var(--accent); font-weight: 700; letter-spacing: 5px; text-transform: uppercase; margin-top: 10px;">Elite Team</p> -->
     </section>
+
+    <div class="lb-tabs reveal active">
+        <div class="lb-mode-group">
+            <button class="lb-tab active" data-mode="0">Contre la Montre</button>
+            <button class="lb-tab" data-mode="1">Time Attack</button>
+        </div>
+        <button class="lb-toggle" id="lb-reverse-toggle">Inversé</button>
+    </div>
 
     <div class="action-bar reveal active">
         <div class="search-wrapper">
@@ -201,102 +213,134 @@
 	</footer>
 
     <script>
-        let allPlayers = [];
-		let currentPage = 1;
-		const itemsPerPage = 10; // On en affiche 10 par 10
+        // IDs LootLocker : [mode][0=normal, 1=inversé]
+        // Remplace null par les vrais IDs quand ils sont créés dans LootLocker
+        const LEADERBOARDS = [
+            [{ id: 33908 }, { id: null }],  // Contre la Montre [normal, inversé]
+            [{ id: null  }, { id: null }],  // Time Attack       [normal, inversé]
+        ];
 
-		function formatChrono(ms) {
-			let mins = Math.floor(ms / 60000);
-			let secs = Math.floor((ms % 60000) / 1000);
-			let mms = ms % 1000;
-			return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}:${mms.toString().padStart(3, '0')}`;
-		}
+        let allPlayers   = [];
+        let currentPage  = 1;
+        let currentMode  = 0;
+        let isReversed   = false;
+        const itemsPerPage = 10;
+        let sessionToken   = null;
 
-		function displayPlayers() {
-			const body = document.getElementById('table-body');
-			const searchTerm = document.getElementById('search-player').value.toLowerCase();
-			
-			// 1. Filtrer
-			let filtered = allPlayers.filter(p => {
-				const name = (p.player && p.player.name) ? p.player.name.toLowerCase() : "anonyme";
-				return name.includes(searchTerm);
-			});
+        function formatChrono(ms) {
+            let mins = Math.floor(ms / 60000);
+            let secs = Math.floor((ms % 60000) / 1000);
+            let mms  = ms % 1000;
+            return `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}:${mms.toString().padStart(3,'0')}`;
+        }
 
-			// 2. Trier (Selon le select)
-			const sortOrder = document.getElementById('sort-order').value;
-			if (sortOrder === "name-asc") {
-				filtered.sort((a, b) => (a.player?.name || "").localeCompare(b.player?.name || ""));
-			} else if (sortOrder === "name-desc") {
-				filtered.sort((a, b) => (b.player?.name || "").localeCompare(a.player?.name || ""));
-			} else {
-				filtered.sort((a, b) => a.rank - b.rank);
-			}
+        function displayPlayers() {
+            const body       = document.getElementById('table-body');
+            const searchTerm = document.getElementById('search-player').value.toLowerCase();
 
-			// 3. Paginer
-			const totalPages = Math.ceil(filtered.length / itemsPerPage);
-			const start = (currentPage - 1) * itemsPerPage;
-			const end = start + itemsPerPage;
-			const paginatedItems = filtered.slice(start, end);
+            let filtered = allPlayers.filter(p => {
+                const name = (p.player && p.player.name) ? p.player.name.toLowerCase() : "anonyme";
+                return name.includes(searchTerm);
+            });
 
-			// 4. Afficher avec animation "one by one"
-			body.innerHTML = '';
-			
-			if (paginatedItems.length === 0) {
-				body.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 40px;">Aucun pilote.</td></tr>';
-			}
+            const sortOrder = document.getElementById('sort-order').value;
+            if (sortOrder === "name-asc") {
+                filtered.sort((a, b) => (a.player?.name || "").localeCompare(b.player?.name || ""));
+            } else if (sortOrder === "name-desc") {
+                filtered.sort((a, b) => (b.player?.name || "").localeCompare(a.player?.name || ""));
+            } else {
+                filtered.sort((a, b) => a.rank - b.rank);
+            }
 
-			paginatedItems.forEach((item, index) => {
-				const playerName = (item.player && item.player.name) ? item.player.name : "Anonyme";
-				let badgeClass = item.rank === 1 ? 'gold' : item.rank === 2 ? 'silver' : item.rank === 3 ? 'bronze' : 'other-rank';
-				
-				const row = document.createElement('tr');
-				row.className = 'row-animate';
-				// Le petit calcul magique pour le délai d'apparition
-				row.style.animationDelay = `${index * 0.05}s`; 
-				
-				row.innerHTML = `
-					<td style="padding-left: 25px;"><div class="rank-badge ${badgeClass}">${item.rank}</div></td>
-					<td style="font-weight: 700; color: var(--text);">${playerName}</td>
-					<td style="text-align: right; padding-right: 40px; font-family: monospace; font-weight: 800; color: var(--accent); font-size: 20px;">${formatChrono(item.score)}</td>
-				`;
-				body.appendChild(row);
-			});
+            const totalPages     = Math.ceil(filtered.length / itemsPerPage);
+            const paginatedItems = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-			// Mettre à jour l'UI des boutons
-			document.getElementById('page-info').innerText = `PAGE ${currentPage} / ${totalPages || 1}`;
-			document.getElementById('prev-btn').disabled = currentPage === 1;
-			document.getElementById('next-btn').disabled = currentPage >= totalPages;
-		}
+            body.innerHTML = '';
+            if (paginatedItems.length === 0) {
+                body.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 40px;">Aucun pilote.</td></tr>';
+            }
 
-		function changePage(direction) {
-			currentPage += direction;
-			displayPlayers();
-			window.scrollTo({ top: 200, behavior: 'smooth' }); // Petit scroll auto
-		}
+            paginatedItems.forEach((item, index) => {
+                const playerName = (item.player && item.player.name) ? item.player.name : "Anonyme";
+                const badgeClass = item.rank === 1 ? 'gold' : item.rank === 2 ? 'silver' : item.rank === 3 ? 'bronze' : 'other-rank';
+                const row = document.createElement('tr');
+                row.className = 'row-animate';
+                row.style.animationDelay = `${index * 0.05}s`;
+                row.innerHTML = `
+                    <td style="padding-left: 25px;"><div class="rank-badge ${badgeClass}">${item.rank}</div></td>
+                    <td style="font-weight: 700; color: var(--text);">${playerName}</td>
+                    <td style="text-align: right; padding-right: 40px; font-family: monospace; font-weight: 800; color: var(--accent); font-size: 20px;">${formatChrono(item.score)}</td>
+                `;
+                body.appendChild(row);
+            });
 
-		async function loadLB() {
-			try {
-				const API_KEY = "dev_3c4618fd7ae34068a8891dd75abc4dd1";
-				const auth = await fetch("https://api.lootlocker.io/game/v2/session/guest", {
-					method: "POST", headers: {"Content-Type": "application/json"},
-					body: JSON.stringify({game_key: API_KEY, game_version: "0.1.0.0", development_mode: true})
-				}).then(r => r.json());
-				
-				// On récupère un gros paquet de joueurs (ex: 100) pour pouvoir paginer
-				const lb = await fetch("https://api.lootlocker.io/game/leaderboards/33908/list?count=100", {
-					method: "GET", headers: {"x-session-token": auth.session_token}
-				}).then(r => r.json());
-				
-				allPlayers = lb.items || [];
-				displayPlayers();
-			} catch(e) { console.error(e); }
-		}
+            document.getElementById('page-info').innerText = `PAGE ${currentPage} / ${totalPages || 1}`;
+            document.getElementById('prev-btn').disabled = currentPage === 1;
+            document.getElementById('next-btn').disabled = currentPage >= totalPages;
+        }
 
-		// Listeners
-		document.getElementById('search-player').addEventListener('input', () => { currentPage = 1; displayPlayers(); });
-		document.getElementById('sort-order').addEventListener('change', () => { currentPage = 1; displayPlayers(); });
-		window.addEventListener('DOMContentLoaded', loadLB);
+        function changePage(direction) {
+            currentPage += direction;
+            displayPlayers();
+            window.scrollTo({ top: 200, behavior: 'smooth' });
+        }
 
+        async function getSession() {
+            if (sessionToken) return sessionToken;
+            const auth = await fetch("https://api.lootlocker.io/game/v2/session/guest", {
+                method: "POST", headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ game_key: "dev_3c4618fd7ae34068a8891dd75abc4dd1", game_version: "0.1.0.0", development_mode: true })
+            }).then(r => r.json());
+            sessionToken = auth.session_token;
+            return sessionToken;
+        }
+
+        async function loadLB() {
+            const config = LEADERBOARDS[currentMode][isReversed ? 1 : 0];
+            const body   = document.getElementById('table-body');
+
+            if (!config.id) {
+                allPlayers = [];
+                body.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 60px; color: var(--text-dim); font-family: Chango, cursive; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6;">Bientôt disponible ✨</td></tr>';
+                document.getElementById('page-info').innerText = 'PAGE 1 / 1';
+                document.getElementById('prev-btn').disabled = true;
+                document.getElementById('next-btn').disabled = true;
+                return;
+            }
+
+            try {
+                const token = await getSession();
+                const lb    = await fetch(`https://api.lootlocker.io/game/leaderboards/${config.id}/list?count=100`, {
+                    method: "GET", headers: { "x-session-token": token }
+                }).then(r => r.json());
+                allPlayers  = lb.items || [];
+                currentPage = 1;
+                displayPlayers();
+            } catch(e) { console.error(e); }
+        }
+
+        document.querySelectorAll('.lb-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentMode = parseInt(tab.dataset.mode);
+                currentPage = 1;
+                allPlayers  = [];
+                loadLB();
+            });
+        });
+
+        document.getElementById('lb-reverse-toggle').addEventListener('click', () => {
+            isReversed = !isReversed;
+            document.getElementById('lb-reverse-toggle').classList.toggle('active', isReversed);
+            currentPage = 1;
+            allPlayers  = [];
+            loadLB();
+        });
+
+        document.getElementById('search-player').addEventListener('input', () => { currentPage = 1; displayPlayers(); });
+        document.getElementById('sort-order').addEventListener('change',   () => { currentPage = 1; displayPlayers(); });
+        window.addEventListener('DOMContentLoaded', loadLB);
     </script>
 </body>
 </html>

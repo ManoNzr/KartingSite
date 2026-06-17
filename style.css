@@ -22,6 +22,29 @@ body {
     overflow-x: hidden;
 }
 
+.nav-fade {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 200px;
+    background: rgba(223, 240, 248, 0.26);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    mask-image: linear-gradient(to bottom,
+        transparent 0%,
+        black 12%,
+        black 54%,
+        transparent 96%
+    );
+    -webkit-mask-image: linear-gradient(to bottom,
+        transparent 0%,
+        black 12%,
+        black 54%,
+        transparent 96%
+    );
+    z-index: 999;
+    pointer-events: none;
+}
+
 .nav-wrapper { position: fixed; top: 20px; width: 100%; display: flex; justify-content: center; z-index: 1000; }
 nav {
     height: auto;
@@ -44,7 +67,7 @@ nav a {
     letter-spacing: 1px;
     margin: 0;
     padding: 0 16px;
-    width: 135px;
+    width: 168px;
     aspect-ratio: 1.778;
     display: flex;
     align-items: center;
@@ -74,22 +97,10 @@ nav a.active {
 
 .glass-card { background: var(--card); backdrop-filter: blur(30px); border-radius: 32px; border: 1px solid var(--border); overflow: hidden; width: 100%; }
 
-h1, h2, h3 { font-family: 'Chango', cursive; font-weight: 400; }
-th { font-family: 'Chango', cursive; letter-spacing: 1px; }
+h1, h2, h3 { font-family: 'Chango', cursive; font-weight: 400; text-transform: uppercase; }
+th { font-family: 'Chango', cursive; letter-spacing: 1px; text-transform: uppercase; }
 #page-info { font-family: 'Chango', cursive; text-transform: uppercase; color: var(--text); font-size: 13px; font-weight: 400; }
 
-/* --- HERO BUBBLES --- */
-.hero-title-centered { position: relative; }
-.hero-bubbles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
-.hero-bubble {
-    position: absolute;
-    border-radius: 50%;
-    animation: hero-float ease-in-out infinite;
-}
-@keyframes hero-float {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-28px) scale(1.04); }
-}
 
 /* --- FEATURE CARDS --- */
 .features-row {
@@ -210,6 +221,62 @@ td, th { padding: 15px; text-align: left; border-bottom: 1px solid var(--border)
     letter-spacing: 1px;
 }
 
+/* --- LEADERBOARD TABS --- */
+.lb-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 0 auto 28px;
+    padding: 0 20px;
+}
+.lb-mode-group {
+    display: flex;
+    gap: 8px;
+}
+.lb-tab {
+    font-family: 'Chango', cursive;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 22px;
+    border-radius: 50px;
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: 0.25s;
+    backdrop-filter: blur(10px);
+}
+.lb-tab:hover { border-color: var(--accent); color: var(--text); transform: translateY(-2px); }
+.lb-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    filter: drop-shadow(0 4px 12px rgba(242, 167, 181, 0.45));
+}
+.lb-toggle {
+    font-family: 'Chango', cursive;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 22px;
+    border-radius: 50px;
+    border: 1.5px solid var(--secondary);
+    background: transparent;
+    color: var(--secondary);
+    cursor: pointer;
+    transition: 0.25s;
+}
+.lb-toggle:hover { transform: translateY(-2px); }
+.lb-toggle.active {
+    background: var(--secondary);
+    color: white;
+    filter: drop-shadow(0 4px 12px rgba(109, 134, 162, 0.45));
+}
+
 /* --- ANIMATION ONE-BY-ONE --- */
 @keyframes slideInRow {
     from { opacity: 0; transform: translateX(-10px); }
@@ -295,7 +362,7 @@ td, th { padding: 15px; text-align: left; border-bottom: 1px solid var(--border)
         display: none;
     }
     nav a {
-        width: 90px;
+        width: 115px;
         font-size: 10px;
         padding: 0 10px;
         letter-spacing: 0.5px;
