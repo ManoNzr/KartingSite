@@ -156,10 +156,11 @@
 
     <div class="lb-tabs reveal active">
         <div class="lb-mode-group">
-            <button class="lb-tab active" data-mode="0">Contre la Montre</button>
-            <button class="lb-tab" data-mode="1">Time Attack</button>
+            <button class="lb-tab active" data-board="0">Contre la Montre</button>
+            <button class="lb-tab" data-board="1">Contre la Montre Inversé</button>
+            <button class="lb-tab" data-board="2">Time Attack</button>
+            <button class="lb-tab" data-board="3">Time Attack Inversé</button>
         </div>
-        <button class="lb-toggle" id="lb-reverse-toggle">Inversé</button>
     </div>
 
     <div class="action-bar reveal active">
@@ -213,17 +214,18 @@
 	</footer>
 
     <script>
-        // IDs LootLocker : [mode][0=normal, 1=inversé]
+        // IDs LootLocker des 4 classements.
         // Remplace null par les vrais IDs quand ils sont créés dans LootLocker
         const LEADERBOARDS = [
-            [{ id: 33908 }, { id: null }],  // Contre la Montre [normal, inversé]
-            [{ id: null  }, { id: null }],  // Time Attack       [normal, inversé]
+            { id: 33908, name: "Contre la Montre" },
+            { id: null,  name: "Contre la Montre Inversé" },
+            { id: null,  name: "Time Attack" },
+            { id: null,  name: "Time Attack Inversé" },
         ];
 
         let allPlayers   = [];
         let currentPage  = 1;
-        let currentMode  = 0;
-        let isReversed   = false;
+        let currentBoard = 0;
         const itemsPerPage = 10;
         let sessionToken   = null;
 
@@ -296,7 +298,7 @@
         }
 
         async function loadLB() {
-            const config = LEADERBOARDS[currentMode][isReversed ? 1 : 0];
+            const config = LEADERBOARDS[currentBoard];
             const body   = document.getElementById('table-body');
 
             if (!config.id) {
@@ -323,19 +325,11 @@
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-                currentMode = parseInt(tab.dataset.mode);
+                currentBoard = parseInt(tab.dataset.board, 10);
                 currentPage = 1;
                 allPlayers  = [];
                 loadLB();
             });
-        });
-
-        document.getElementById('lb-reverse-toggle').addEventListener('click', () => {
-            isReversed = !isReversed;
-            document.getElementById('lb-reverse-toggle').classList.toggle('active', isReversed);
-            currentPage = 1;
-            allPlayers  = [];
-            loadLB();
         });
 
         document.getElementById('search-player').addEventListener('input', () => { currentPage = 1; displayPlayers(); });
