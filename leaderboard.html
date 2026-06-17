@@ -215,12 +215,11 @@
 
     <script>
         // IDs LootLocker des 4 classements.
-        // Remplace null par les vrais IDs quand ils sont créés dans LootLocker
         const LEADERBOARDS = [
-            { id: 33908, name: "Contre la Montre" },
-            { id: null,  name: "Contre la Montre Inversé" },
-            { id: null,  name: "Time Attack" },
-            { id: null,  name: "Time Attack Inversé" },
+            { id: 34928, key: "main_race_03", name: "Contre la Montre" },
+            { id: 34929, key: "main_race_04", name: "Contre la Montre Inversé" },
+            { id: 34926, key: "main_race_01", name: "Time Attack" },
+            { id: 34927, key: "main_race_02", name: "Time Attack Inversé" },
         ];
 
         let allPlayers   = [];
@@ -293,6 +292,9 @@
                 method: "POST", headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ game_key: "dev_3c4618fd7ae34068a8891dd75abc4dd1", game_version: "0.1.0.0", development_mode: true })
             }).then(r => r.json());
+            if (!auth.session_token) {
+                throw new Error(auth.message || "Impossible d'ouvrir une session LootLocker.");
+            }
             sessionToken = auth.session_token;
             return sessionToken;
         }
@@ -318,7 +320,14 @@
                 allPlayers  = lb.items || [];
                 currentPage = 1;
                 displayPlayers();
-            } catch(e) { console.error(e); }
+            } catch(e) {
+                console.error(e);
+                allPlayers = [];
+                body.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 40px;">Impossible de charger ce classement.</td></tr>';
+                document.getElementById('page-info').innerText = 'PAGE 1 / 1';
+                document.getElementById('prev-btn').disabled = true;
+                document.getElementById('next-btn').disabled = true;
+            }
         }
 
         document.querySelectorAll('.lb-tab').forEach(tab => {
