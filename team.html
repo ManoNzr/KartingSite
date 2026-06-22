@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8"><title>Équipe | Co'Cot Racing</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Équipe | Co'Cot Racing</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,8 +27,10 @@
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .flip-card:hover .flip-card-inner {
-            transform: rotateY(180deg);
+        @media (hover: hover) and (pointer: fine) {
+            .flip-card:hover .flip-card-inner {
+                transform: rotateY(180deg);
+            }
         }
 
         /* Les deux faces : absolute empilées, même taille */
@@ -89,7 +93,8 @@
         /* Grilles flex centrées */
         .team-grid-progs,
         .team-grid-arts {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(4, 220px);
             justify-content: center;
             gap: 25px;
         }
@@ -97,14 +102,35 @@
         .team-grid-progs { margin-bottom: 80px; }
 
         @media (max-width: 750px) {
-            .team-grid-progs, .team-grid-arts { flex-wrap: wrap; }
-            .flip-card { width: calc(50% - 15px); }
+            .team-grid-progs, .team-grid-arts {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 16px;
+            }
+            .flip-card {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 11 / 16;
+            }
         }
 
         /* NOUVEAU : Sur les très petits téléphones, on passe à 1 carte par ligne ! */
         @media (max-width: 480px) {
-            .flip-card { width: 100%; max-width: 260px; }
-            .team-grid-progs, .team-grid-arts { gap: 20px; }
+            .flip-card { width: 100%; max-width: 300px; }
+            .team-grid-progs, .team-grid-arts {
+                grid-template-columns: minmax(0, 300px);
+                gap: 18px;
+            }
+            .team-grid-progs { margin-bottom: 56px; }
+        }
+
+        @media (hover: none), (pointer: coarse) {
+            .flip-card-inner {
+                transform: none !important;
+            }
+
+            .card-back {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -120,12 +146,12 @@
     </div>
     
 
-    <section class="hero-title-centered" style="height: 35vh;">
+    <section class="hero-title-centered page-hero" style="height: 35vh;">
         <h1 class="reveal active" style="font-size: clamp(50px, 8vw, 80px); letter-spacing: -3px;">Les Créateurs</h1>
         <!-- <p class="reveal active" style="color: var(--accent); font-weight: 700; letter-spacing: 5px; text-transform: uppercase; margin-top: 10px;">Elite Team</p> -->
     </section>
 
-    <div style="max-width: 1100px; margin: auto; padding: 0 20px 150px;">
+    <main class="team-content" style="max-width: 1100px; margin: auto; padding: 0 20px 150px;">
 
 
         <h2 class="reveal active" style="margin-bottom: 30px; font-size: 14px; letter-spacing: 3px; color: var(--text-dim); text-align: center;">GAME PROGRAMMERS</h2>
@@ -227,7 +253,7 @@
 		</div>
 	</div>
 
-    </div>
+    </main>
 	<footer class="site-footer">
     <div class="footer-container">
         <div class="footer-block">
@@ -236,7 +262,7 @@
             <span class="footer-text">Rubika Réunion / 2026</span>
         </div>
 
-        <div class="footer-block" style="text-align: right;">
+        <div class="footer-block footer-block-right" style="text-align: right;">
             <span class="footer-label">Développement</span>
             <span class="footer-text">© Team NOM DU GROUPE — Tous droits réservés</span>
             <span class="footer-text">Game Design & Programming Campus</span>

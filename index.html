@@ -23,16 +23,16 @@
     </div>
 
     <!-- HERO -->
-    <section class="hero-title-centered">
-        <img src="assets/img/Titre_logo.png" class="reveal" alt="Co'Cot Racing"
+    <section class="hero-title-centered home-hero">
+        <img src="assets/img/Titre_logo.png" class="reveal hero-logo" alt="Co'Cot Racing"
              style="max-width: min(800px, 92vw); filter: drop-shadow(0 8px 30px rgba(109, 134, 162, 0.25)); position: relative; z-index: 1;">
-        <p class="reveal" style="font-family: 'Chango', cursive; font-size: 15px; color: var(--secondary); letter-spacing: 5px; text-transform: uppercase; margin-top: 22px; position: relative; z-index: 1; opacity: 0.8;">
+        <p class="reveal hero-kicker" style="font-family: 'Chango', cursive; font-size: 15px; color: var(--secondary); letter-spacing: 5px; text-transform: uppercase; margin-top: 22px; position: relative; z-index: 1; opacity: 0.8;">
             Kart &middot; Saint-Paul &middot; Rubika
         </p>
-        <div class="reveal" style="margin-top: 48px; animation: bounce 2s infinite; font-size: 28px; color: var(--text-dim); opacity: 0.5; position: relative; z-index: 1;">↓</div>
+        <div class="reveal hero-scroll-hint" style="margin-top: 48px; animation: bounce 2s infinite; font-size: 28px; color: var(--text-dim); opacity: 0.5; position: relative; z-index: 1;">↓</div>
     </section>
 
-    <div style="max-width: 1400px; margin: auto; padding: 0 40px;">
+    <div class="page-container home-content" style="max-width: 1400px; margin: auto; padding: 0 40px;">
 
         <!-- Vidéo -->
         <div class="reveal video-container" style="
@@ -59,8 +59,8 @@
         </h2>
 
         <div class="gallery-grid">
-            <div class="reveal gallery-item wide" style="background: url('assets/img/écran_titre.png') center center / cover no-repeat; height: 400px;">
-                <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(50,70,100,0.82) 0%, transparent 55%); display: flex; align-items: flex-end; padding: 40px;">
+            <div class="reveal gallery-item wide gallery-item-featured" style="background: url('assets/img/écran_titre.png') center center / cover no-repeat; height: 400px;">
+                <div class="gallery-overlay" style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(50,70,100,0.82) 0%, transparent 55%); display: flex; align-items: flex-end; padding: 40px;">
                     <div>
                         <h3 style="color: white; font-size: 26px; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">Co'Cot Racing</h3>
                         <p style="color: rgba(255,255,255,0.8); font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.5;">Vroum vroum.</p>
@@ -101,14 +101,14 @@
         </div>
 
         <!-- CTA -->
-        <section style="text-align: center; padding: 100px 0 160px;">
+        <section class="home-cta" style="text-align: center; padding: 100px 0 160px;">
             <h2 class="reveal" style="font-size: clamp(34px, 7vw, 58px); margin-bottom: 16px; line-height: 1.15;">
                 Prêt à entrer dans<br><span style="color: var(--accent);">la légende ?</span>
             </h2>
             <p class="reveal" style="font-family: 'Inter', sans-serif; color: var(--text-dim); margin-bottom: 52px; font-size: 16px; line-height: 1.6;">
                 Télécharge le jeu, bats les records, deviens le meilleur pilote de Co'Cot Racing.
             </p>
-            <div class="reveal" style="display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; align-items: center;">
+            <div class="reveal home-cta-actions" style="display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; align-items: center;">
                 <a href="download.html" class="cta-massive">TÉLÉCHARGER</a>
                 <a href="leaderboard.html" class="cta-massive">LEADERBOARD</a>
             </div>
@@ -123,7 +123,7 @@
                 <span class="footer-text">Co'Cot Racing — Build 0.0.0-Alpha</span>
                 <span class="footer-text">Rubika Réunion / 2026</span>
             </div>
-            <div class="footer-block" style="text-align: right;">
+            <div class="footer-block footer-block-right" style="text-align: right;">
                 <span class="footer-label">Développement</span>
                 <span class="footer-text">© Team NOM DU GROUPE — Tous droits réservés</span>
                 <span class="footer-text">Game Design & Programming Campus</span>

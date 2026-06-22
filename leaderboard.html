@@ -132,7 +132,10 @@
         
         /* Petit fix responsive pour la barre d'action */
         @media (max-width: 600px) {
-            .action-bar { flex-direction: column; }
+            .action-bar {
+                flex-direction: column;
+                padding: 0 16px;
+            }
             .sort-wrapper { width: 100%; }
         }
     </style>
@@ -149,7 +152,7 @@
     </div>
     
 
-    <section class="hero-title-centered" style="height: 35vh;">
+    <section class="hero-title-centered page-hero" style="height: 35vh;">
         <h1 class="reveal active" style="font-size: clamp(50px, 8vw, 80px); letter-spacing: -3px;">Classement</h1>
         <!-- <p class="reveal active" style="color: var(--accent); font-weight: 700; letter-spacing: 5px; text-transform: uppercase; margin-top: 10px;">Elite Team</p> -->
     </section>
@@ -176,7 +179,7 @@
         </div>
     </div>
 
-    <div style="max-width: 900px; margin: auto; padding: 0 20px 50px; display: flex; justify-content: center;">
+    <div class="leaderboard-table-wrap" style="max-width: 900px; margin: auto; padding: 0 20px 50px; display: flex; justify-content: center;">
         <div class="reveal active glass-card">
             <table>
                 <thead style="background: rgba(255,255,255,0.02);">
@@ -205,7 +208,7 @@
             <span class="footer-text">Rubika Réunion / 2026</span>
         </div>
 
-        <div class="footer-block" style="text-align: right;">
+        <div class="footer-block footer-block-right" style="text-align: right;">
             <span class="footer-label">Développement</span>
             <span class="footer-text">© Team NOM DU GROUPE — Tous droits réservés</span>
             <span class="footer-text">Game Design & Programming Campus</span>
