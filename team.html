@@ -94,11 +94,12 @@
         .team-grid-progs,
         .team-grid-arts {
             display: grid;
-            grid-template-columns: repeat(4, 220px);
             justify-content: center;
             gap: 25px;
         }
 
+        .team-grid-progs { grid-template-columns: repeat(4, 220px); }
+        .team-grid-arts { grid-template-columns: repeat(3, 220px); }
         .team-grid-progs { margin-bottom: 80px; }
 
         @media (max-width: 750px) {
