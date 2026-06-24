@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -144,37 +144,37 @@
     <div class="nav-fade"></div>
     <div class="nav-wrapper">
         <nav>
-            <a href="index.html">Accueil</a>
-            <a href="team.html">Équipe</a>
+            <a href="index.html">Home</a>
+            <a href="team.html">Team</a>
             <a href="leaderboard.html" class="active">Leaderboard</a>
-            <a href="download.html">Télécharger</a>
+            <a href="download.html">Download</a>
         </nav>
     </div>
     
 
     <section class="hero-title-centered page-hero" style="height: 35vh;">
-        <h1 class="reveal active" style="font-size: clamp(50px, 8vw, 80px); letter-spacing: -3px;">Classement</h1>
+        <h1 class="reveal active" style="font-size: clamp(50px, 8vw, 80px); letter-spacing: -3px;">Leaderboard</h1>
         <!-- <p class="reveal active" style="color: var(--accent); font-weight: 700; letter-spacing: 5px; text-transform: uppercase; margin-top: 10px;">Elite Team</p> -->
     </section>
 
     <div class="lb-tabs reveal active">
         <div class="lb-mode-group">
-            <button class="lb-tab active" data-board="0">Contre la Montre</button>
-            <button class="lb-tab" data-board="1">Contre la Montre Inversé</button>
+            <button class="lb-tab active" data-board="0">Time Trial</button>
+            <button class="lb-tab" data-board="1">Reverse Time Trial</button>
             <button class="lb-tab" data-board="2">Time Attack</button>
-            <button class="lb-tab" data-board="3">Time Attack Inversé</button>
+            <button class="lb-tab" data-board="3">Reverse Time Attack</button>
         </div>
     </div>
 
     <div class="action-bar reveal active">
         <div class="search-wrapper">
-            <input type="text" id="search-player" class="search-input" placeholder="Chercher un pilote...">
+            <input type="text" id="search-player" class="search-input" placeholder="Search for a driver...">
         </div>
         <div class="sort-wrapper">
             <select id="sort-order" class="sort-select">
-                <option value="rank">Par Rang (Top 1)</option>
-                <option value="name-asc">Nom (A-Z)</option>
-                <option value="name-desc">Nom (Z-A)</option>
+                <option value="rank">By Rank (Top 1)</option>
+                <option value="name-asc">Name (A-Z)</option>
+                <option value="name-desc">Name (Z-A)</option>
             </select>
         </div>
     </div>
@@ -184,9 +184,9 @@
             <table>
                 <thead style="background: rgba(255,255,255,0.02);">
                     <tr style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px;">
-                        <th style="padding-left: 25px; width: 100px;">RANG</th>
-                        <th>PILOTE</th>
-                        <th style="text-align: right; padding-right: 40px;">CHRONO</th>
+                        <th style="padding-left: 25px; width: 100px;">RANK</th>
+                        <th>DRIVER</th>
+                        <th style="text-align: right; padding-right: 40px;">TIME</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
@@ -195,34 +195,34 @@
         </div>
     </div>
 	<div class="pagination reveal active">
-        <button id="prev-btn" class="page-btn" onclick="changePage(-1)" disabled>PRÉCÉDENT</button>
+        <button id="prev-btn" class="page-btn" onclick="changePage(-1)" disabled>PREVIOUS</button>
         <span id="page-info">PAGE 1</span>
-        <button id="next-btn" class="page-btn" onclick="changePage(1)">SUIVANT</button>
+        <button id="next-btn" class="page-btn" onclick="changePage(1)">NEXT</button>
     </div>
 	
 	<footer class="site-footer">
     <div class="footer-container">
         <div class="footer-block">
-            <span class="footer-label">Projet</span>
+            <span class="footer-label">Project</span>
             <span class="footer-text">Co'Cot Racing — Build 0.0.0-Alpha</span>
             <span class="footer-text">Rubika Réunion / 2026</span>
         </div>
 
         <div class="footer-block footer-block-right" style="text-align: right;">
-            <span class="footer-label">Développement</span>
-            <span class="footer-text">© Team NOM DU GROUPE — Tous droits réservés</span>
+            <span class="footer-label">Development</span>
+            <span class="footer-text">© Team NOM DU GROUPE — All rights reserved</span>
             <span class="footer-text">Game Design & Programming Campus</span>
         </div>
     </div>
 	</footer>
 
     <script>
-        // IDs LootLocker des 4 classements.
+        // LootLocker IDs of the 4 leaderboards.
         const LEADERBOARDS = [
-            { id: 34928, key: "main_race_03", name: "Contre la Montre" },
-            { id: 34929, key: "main_race_04", name: "Contre la Montre Inversé" },
+            { id: 34928, key: "main_race_03", name: "Time Trial" },
+            { id: 34929, key: "main_race_04", name: "Reverse Time Trial" },
             { id: 34926, key: "main_race_01", name: "Time Attack" },
-            { id: 34927, key: "main_race_02", name: "Time Attack Inversé" },
+            { id: 34927, key: "main_race_02", name: "Reverse Time Attack" },
         ];
 
         let allPlayers   = [];
@@ -243,7 +243,7 @@
             const searchTerm = document.getElementById('search-player').value.toLowerCase();
 
             let filtered = allPlayers.filter(p => {
-                const name = (p.player && p.player.name) ? p.player.name.toLowerCase() : "anonyme";
+                const name = (p.player && p.player.name) ? p.player.name.toLowerCase() : "anonymous";
                 return name.includes(searchTerm);
             });
 
@@ -261,11 +261,11 @@
 
             body.innerHTML = '';
             if (paginatedItems.length === 0) {
-                body.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 40px;">Aucun pilote.</td></tr>';
+                body.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 40px;">No drivers.</td></tr>';
             }
 
             paginatedItems.forEach((item, index) => {
-                const playerName = (item.player && item.player.name) ? item.player.name : "Anonyme";
+                const playerName = (item.player && item.player.name) ? item.player.name : "Anonymous";
                 const badgeClass = item.rank === 1 ? 'gold' : item.rank === 2 ? 'silver' : item.rank === 3 ? 'bronze' : 'other-rank';
                 const row = document.createElement('tr');
                 row.className = 'row-animate';
@@ -296,7 +296,7 @@
                 body: JSON.stringify({ game_key: "dev_3c4618fd7ae34068a8891dd75abc4dd1", game_version: "0.1.0.0", development_mode: true })
             }).then(r => r.json());
             if (!auth.session_token) {
-                throw new Error(auth.message || "Impossible d'ouvrir une session LootLocker.");
+                throw new Error(auth.message || "Couldn't open a LootLocker session.");
             }
             sessionToken = auth.session_token;
             return sessionToken;
@@ -308,7 +308,7 @@
 
             if (!config.id) {
                 allPlayers = [];
-                body.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 60px; color: var(--text-dim); font-family: Chango, cursive; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6;">Bientôt disponible ✨</td></tr>';
+                body.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 60px; color: var(--text-dim); font-family: Chango, cursive; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6;">Coming soon ✨</td></tr>';
                 document.getElementById('page-info').innerText = 'PAGE 1 / 1';
                 document.getElementById('prev-btn').disabled = true;
                 document.getElementById('next-btn').disabled = true;
@@ -326,7 +326,7 @@
             } catch(e) {
                 console.error(e);
                 allPlayers = [];
-                body.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 40px;">Impossible de charger ce classement.</td></tr>';
+                body.innerHTML = '<tr><td colspan="3" style="text-align:center; padding: 40px;">Couldn\'t load this leaderboard.</td></tr>';
                 document.getElementById('page-info').innerText = 'PAGE 1 / 1';
                 document.getElementById('prev-btn').disabled = true;
                 document.getElementById('next-btn').disabled = true;
