@@ -204,6 +204,13 @@ th { font-family: 'Chango', cursive; letter-spacing: 1px; text-transform: upperc
     justify-content: center;
 }
 
+.download-warning {
+    margin-top: 28px;
+    font-size: 15px;
+    opacity: 0.7;
+    text-align: center;
+}
+
 .download-specs {
     margin-top: 90px;
 }
